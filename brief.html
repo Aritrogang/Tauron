@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tauron — 2026 Project Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #F2EDE4;
+  --ink:      #181410;
+  --barn:     #2C1A0E;
+  --earth:    #5C3D1E;
+  --straw:    #C9983A;
+  --straw-lt: #E8C87A;
+  --green:    #2E5E1E;
+  --sage:     #6A9E48;
+  --sage-lt:  #A8CC80;
+  --mist:     #8C8070;
+  --line:     #D8D0C4;
+  --card:     #FAF7F2;
+  --dark-bg:  #131008;
+  --dark-mid: #1E1A10;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: var(--dark-bg);
+  padding: 64px 80px 52px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-noise {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.header-glow {
+  position: absolute;
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(106,158,72,0.12) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  pointer-events: none;
+}
+
+.header-inner {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 56px;
+  align-items: end;
+  position: relative;
+  z-index: 1;
+}
+
+.kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 22px;
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(64px, 8vw, 108px);
+  font-weight: 700;
+  color: var(--bg);
+  line-height: 0.9;
+  letter-spacing: -3px;
+  margin-bottom: 18px;
+}
+
+.logo .accent { color: var(--sage); font-style: italic; }
+
+.header-sub {
+  font-size: 14px;
+  color: rgba(242,237,228,0.45);
+  line-height: 1.65;
+  max-width: 500px;
+  font-weight: 300;
+}
+
+.theme-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(106,158,72,0.25);
+  border-radius: 6px;
+  padding: 22px 20px;
+  align-self: start;
+}
+
+.theme-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sage-lt);
+  margin-bottom: 10px;
+}
+
+.theme-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--bg);
+  line-height: 1.35;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.ch-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.ch-pip {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.pip-a { background: var(--sage); }
+.pip-b { background: var(--straw); }
+
+.ch-text {
+  font-size: 11.5px;
+  color: rgba(242,237,228,0.6);
+  line-height: 1.5;
+}
+
+.ch-text strong { color: rgba(242,237,228,0.9); font-weight: 700; }
+
+/* ─── WRAP ─── */
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 72px 80px;
+}
+
+/* ─── EYEBROW ─── */
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--mist);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 28px; height: 1px;
+  background: var(--sage);
+  flex-shrink: 0;
+}
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--barn);
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.intro-text {
+  font-size: 14.5px;
+  color: #555;
+  max-width: 700px;
+  line-height: 1.75;
+  margin-bottom: 36px;
+}
+
+/* ─── PITCH ─── */
+.pitch {
+  background: var(--dark-bg);
+  border-radius: 10px;
+  padding: 52px 60px;
+  margin-bottom: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pitch::before {
+  content: 'τ';
+  position: absolute;
+  top: -40px; right: 30px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 280px;
+  color: rgba(106,158,72,0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.pitch blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 2.2vw, 25px);
+  font-style: italic;
+  color: var(--bg);
+  line-height: 1.55;
+  max-width: 840px;
+  position: relative;
+  z-index: 1;
+  font-weight: 400;
+}
+
+.pitch blockquote strong { color: var(--straw-lt); font-style: normal; font-weight: 600; }
+.pitch blockquote em.green { color: var(--sage-lt); font-style: italic; }
+
+/* ─── DATA STRATEGY ─── */
+.data-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.tier {
+  padding: 32px 28px;
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+
+.tier:last-child { border-right: none; }
+
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  margin-bottom: 14px;
+}
+
+.badge-base { background: rgba(44,90,30,0.1); color: var(--green); }
+.badge-mid  { background: rgba(201,152,58,0.12); color: var(--earth); }
+.badge-full { background: rgba(106,158,72,0.15); color: var(--green); border: 1px solid rgba(106,158,72,0.3); }
+
+.tier h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--barn);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.tier p {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+.tier ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.tier ul li {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+  padding: 3px 0;
+  padding-left: 14px;
+  position: relative;
+}
+
+.tier ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--sage);
+  font-size: 10px;
+}
+
+.tier-accuracy {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.accuracy-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.accuracy-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--sage);
+}
+
+.accuracy-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--mist);
+  white-space: nowrap;
+}
+
+.data-callout {
+  background: var(--green);
+  border-radius: 6px;
+  padding: 20px 28px;
+  margin-bottom: 72px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.data-callout p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  color: var(--bg);
+  line-height: 1.5;
+}
+
+.data-callout p strong { color: var(--straw-lt); font-weight: 600; }
+
+/* ─── HOW IT WORKS ─── */
+.impl-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 72px;
+}
+
+.impl-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.impl-head {
+  background: var(--barn);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.impl-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(242,237,228,0.4);
+  letter-spacing: 0.1em;
+}
+
+.impl-head h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.impl-head .impl-icon { margin-left: auto; font-size: 18px; }
+
+.impl-body {
+  padding: 24px;
+}
+
+.impl-body p {
+  font-size: 13.5px;
+  color: #444;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.impl-body p:last-child { margin-bottom: 0; }
+
+.impl-body strong { color: var(--barn); font-weight: 700; }
+
+.code-block {
+  background: var(--dark-bg);
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.code-block code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--sage-lt);
+  line-height: 1.8;
+  display: block;
+  white-space: pre;
+}
+
+.code-block .cm { color: rgba(242,237,228,0.3); }
+.code-block .ck { color: #7FB4CA; }
+.code-block .cv { color: var(--straw-lt); }
+
+/* ─── PIPELINE ─── */
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.pipe-step {
+  padding: 26px 18px;
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+
+.pipe-step:last-child { border-right: none; }
+
+.pipe-arrow {
+  position: absolute;
+  right: -10px; top: 50%;
+  transform: translateY(-50%);
+  width: 18px; height: 18px;
+  background: var(--sage);
+  clip-path: polygon(0 30%, 55% 30%, 55% 0, 100% 50%, 55% 100%, 55% 70%, 0 70%);
+  z-index: 2;
+}
+
+.pipe-step:last-child .pipe-arrow { display: none; }
+
+.pipe-n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--mist);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+
+.pipe-step h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--barn);
+  margin-bottom: 6px;
+}
+
+.pipe-step p {
+  font-size: 11.5px;
+  color: #666;
+  line-height: 1.55;
+}
+
+.pipe-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  background: rgba(44,90,30,0.08);
+  color: var(--green);
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+
+/* ─── TECH CARDS ─── */
+.tech-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 72px;
+}
+
+.tech-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--sage);
+  border-radius: 4px;
+  padding: 18px 20px;
+}
+
+.tech-card .tl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: 8px;
+}
+
+.tech-card h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--barn);
+  margin-bottom: 8px;
+}
+
+.tech-card p {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* ─── APP SECTION ─── */
+.app-section { margin-bottom: 80px; }
+
+.app-frame {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Phone mockup */
+.phone-wrap {
+  position: relative;
+}
+
+.phone {
+  background: var(--dark-bg);
+  border-radius: 36px;
+  border: 2px solid #333;
+  padding: 14px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.04);
+  position: relative;
+}
+
+.phone-notch {
+  width: 80px; height: 24px;
+  background: var(--dark-bg);
+  border: 2px solid #333;
+  border-radius: 12px;
+  margin: 0 auto 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.phone-screen {
+  background: #0A1206;
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 520px;
+}
+
+.phone-statusbar {
+  padding: 10px 16px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phone-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(242,237,228,0.7);
+  font-weight: 700;
+}
+
+.phone-icons {
+  font-size: 10px;
+  color: rgba(242,237,228,0.5);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* App header */
+.app-topbar {
+  padding: 8px 16px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.app-logo-sm {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: var(--bg);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.app-logo-sm em { color: var(--sage); font-style: italic; }
+
+.app-farm-name {
+  font-size: 10px;
+  color: rgba(242,237,228,0.35);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 1px;
+}
+
+/* Summary row */
+.app-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 12px 14px;
+}
+
+.sum-cell {
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.sum-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  display: block;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.val-ok   { color: var(--sage-lt); }
+.val-warn { color: var(--straw-lt); }
+.val-risk { color: #E07050; }
+
+.sum-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.3);
+}
+
+/* Alert list */
+.app-section-label {
+  padding: 10px 16px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.3);
+}
+
+.app-alert {
+  margin: 0 10px 8px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+}
+
+.al-high {
+  background: rgba(139,46,15,0.18);
+  border-color: rgba(200,80,50,0.3);
+}
+
+.al-warn {
+  background: rgba(180,130,40,0.12);
+  border-color: rgba(200,160,60,0.25);
+}
+
+.al-ok {
+  background: rgba(44,94,30,0.12);
+  border-color: rgba(106,158,72,0.2);
+}
+
+.al-row1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.al-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-high { background: #E07050; animation: blink 2s ease-in-out infinite; }
+.dot-warn { background: var(--straw); }
+.dot-ok   { background: var(--sage); }
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+.al-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(242,237,228,0.9);
+  flex: 1;
+}
+
+.al-conf {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: rgba(242,237,228,0.4);
+}
+
+.al-body {
+  font-size: 10.5px;
+  color: rgba(242,237,228,0.6);
+  line-height: 1.5;
+}
+
+.al-action {
+  display: inline-block;
+  margin-top: 7px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sage);
+  border: 1px solid rgba(106,158,72,0.3);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+/* Bottom nav */
+.app-nav {
+  display: flex;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 8px;
+}
+
+.nav-item {
+  flex: 1;
+  padding: 10px 6px 12px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.nav-item .nav-lbl {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+  color: rgba(242,237,228,0.3);
+  margin-top: 3px;
+  letter-spacing: 0.08em;
+}
+
+.nav-item.active .nav-lbl { color: var(--sage); }
+
+/* Right side — screens description */
+.app-screens {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.screen-desc {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.screen-head {
+  background: var(--barn);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.screen-head .sn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: rgba(242,237,228,0.35);
+  letter-spacing: 0.1em;
+}
+
+.screen-head h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.screen-head .sicon { margin-left: auto; font-size: 16px; }
+
+.screen-body {
+  padding: 20px 22px;
+}
+
+.screen-body p {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+
+.screen-body p:last-child { margin-bottom: 0; }
+.screen-body strong { color: var(--barn); font-weight: 700; }
+
+.feature-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  background: rgba(44,90,30,0.09);
+  color: var(--green);
+  border: 1px solid rgba(44,90,30,0.2);
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+/* ─── ENTRY FLOW ─── */
+.entry-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 72px;
+}
+
+.ef-step {
+  padding: 28px 22px;
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+
+.ef-step:last-child { border-right: none; }
+
+.ef-arrow {
+  position: absolute;
+  right: -9px; top: 50%;
+  transform: translateY(-50%);
+  width: 16px; height: 16px;
+  background: var(--straw);
+  clip-path: polygon(0 30%, 55% 30%, 55% 0, 100% 50%, 55% 100%, 55% 70%, 0 70%);
+  z-index: 2;
+}
+
+.ef-step:last-child .ef-arrow { display: none; }
+
+.ef-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--mist);
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.ef-icon { font-size: 22px; margin-bottom: 10px; display: block; }
+
+.ef-step h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--barn);
+  margin-bottom: 6px;
+}
+
+.ef-step p {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* ─── TEAM ─── */
+.team-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 72px;
+}
+
+.team-tbl th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mist);
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 2px solid var(--line);
+}
+
+.team-tbl td {
+  padding: 16px;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  color: #444;
+  line-height: 1.65;
+}
+
+.team-tbl tr:last-child td { border-bottom: none; }
+
+.tn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--barn);
+  line-height: 1;
+}
+
+.trole {
+  font-weight: 700;
+  color: var(--barn);
+  font-size: 14px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.tstack {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  margin-top: 5px;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark-bg);
+  padding: 44px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.f-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--bg);
+  letter-spacing: -1px;
+}
+
+.f-brand em { color: var(--sage); font-style: italic; }
+
+.f-meta {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: rgba(242,237,228,0.25);
+  line-height: 2.2;
+  letter-spacing: 0.06em;
+}
+
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 72px 0;
+}
+
+@media (max-width: 900px) {
+  .header, .wrap, footer { padding-left: 24px; padding-right: 24px; }
+  .header-inner, .data-tiers, .impl-grid, .pipeline, .tech-row,
+  .app-frame, .entry-flow { grid-template-columns: 1fr; }
+  .tier { border-right: none; border-bottom: 1px solid var(--line); }
+  .pipe-step { border-right: none; border-bottom: 1px solid var(--line); }
+  .pipe-arrow, .ef-arrow { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-noise"></div>
+  <div class="header-glow"></div>
+  <div class="header-inner">
+    <div>
+      <div class="kicker">Cornell Digital Ag Hackathon · Feb 27–Mar 1, 2026 · $8,000 Prize Pool</div>
+      <div class="logo">Tau<span class="accent">ron</span></div>
+      <p class="header-sub">Graph Neural Network early warning system for dairy herd disease — built for the farms that can't afford to wait for symptoms. Works with whatever data you already have.</p>
+    </div>
+    <div class="theme-card">
+      <div class="theme-label">Competing Under</div>
+      <div class="theme-name">Data-Driven, Human-Centric Digital Agriculture Innovations</div>
+      <div class="ch-row">
+        <div class="ch-pip pip-a"></div>
+        <div class="ch-text"><strong>Primary Challenge</strong> — Ethical &amp; Reliable AI for Agricultural Advancement (XAI focus)</div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-pip pip-b"></div>
+        <div class="ch-text"><strong>Secondary Challenge</strong> — Assist Small-Scale Farms to Make Better-Informed Decisions</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- PITCH -->
+  <div class="pitch" style="margin-top:0;">
+    <blockquote>
+      "Tauron works with <strong>whatever data a farm already has</strong> — a spreadsheet of milk yields, a feeding log, a vet treatment record. Feed it more, it gets smarter. <em class="green">But it starts working on day one,</em> turning the relational structure of a dairy herd into a 48-hour early warning system that any farmer can understand from their phone — <strong>no sensors required, no vet degree required.</strong>"
+    </blockquote>
+  </div>
+
+  <!-- DATA STRATEGY -->
+  <div class="eyebrow">Data Strategy</div>
+  <h2>Meets Farmers Where They Are</h2>
+  <p class="intro-text">Tauron is designed as a tiered system — it runs on the minimum data every dairy farm already records, and upgrades its predictions as richer data becomes available. Richer data means better predictions, but the system is useful from day one with nothing more than a spreadsheet.</p>
+
+  <div class="data-tiers">
+    <div class="tier">
+      <div class="tier-badge badge-base">Tier 1 · Every farm</div>
+      <h3>Manual Records Only</h3>
+      <p>The data every dairy farmer already keeps — on paper, in Excel, or in their phone notes. Tauron ingests this via a simple weekly CSV upload or a 5-field manual entry form.</p>
+      <ul>
+        <li>Milk yield per cow (parlor records)</li>
+        <li>Vet treatment log (which cow, what disease, when)</li>
+        <li>Pen &amp; stall assignment records</li>
+        <li>Feeding station visit log (if recorded)</li>
+        <li>Calving dates &amp; reproductive events</li>
+      </ul>
+      <div class="tier-accuracy">
+        <div class="accuracy-bar"><div class="accuracy-fill" style="width:55%"></div></div>
+        <div class="accuracy-label">~55% prediction accuracy</div>
+      </div>
+    </div>
+    <div class="tier">
+      <div class="tier-badge badge-mid">Tier 2 · Mid-size farms</div>
+      <h3>Automated Milking Data</h3>
+      <p>Farms with automated milking systems (DeLaval, Lely, GEA) already generate per-cow data automatically. Tauron connects via their export APIs or standard CSV formats — no extra hardware needed.</p>
+      <ul>
+        <li>All Tier 1 data, plus:</li>
+        <li>Per-cow milk conductivity (mastitis proxy)</li>
+        <li>Milking frequency &amp; duration</li>
+        <li>Automated feeding station visit logs</li>
+        <li>Body weight from weigh platforms</li>
+      </ul>
+      <div class="tier-accuracy">
+        <div class="accuracy-bar"><div class="accuracy-fill" style="width:74%"></div></div>
+        <div class="accuracy-label">~74% prediction accuracy</div>
+      </div>
+    </div>
+    <div class="tier">
+      <div class="tier-badge badge-full">Tier 3 · Sensor-equipped</div>
+      <h3>Full Wearable Integration</h3>
+      <p>Farms with SCR/Allflex, Nedap, or CowManager collars get the full GNN experience — real-time contact graph edges from proximity data, continuous rumination and activity streams.</p>
+      <ul>
+        <li>All Tier 1 &amp; 2 data, plus:</li>
+        <li>Rumination time (hourly)</li>
+        <li>Activity / step count</li>
+        <li>Proximity events between cows</li>
+        <li>Body temperature (some collars)</li>
+        <li>Lying time &amp; posture</li>
+      </ul>
+      <div class="tier-accuracy">
+        <div class="accuracy-bar"><div class="accuracy-fill" style="width:89%"></div></div>
+        <div class="accuracy-label">~89% prediction accuracy</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-callout">
+    <span style="flex-shrink:0"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="26" x2="14" y2="10" stroke="#A8CC80" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="14" cy="7.5" rx="3.5" ry="5" stroke="#A8CC80" stroke-width="1.3" transform="rotate(-15 14 7.5)"/><ellipse cx="9" cy="14" rx="3" ry="4.5" stroke="#A8CC80" stroke-width="1.2" transform="rotate(-40 9 14)"/><ellipse cx="19" cy="14" rx="3" ry="4.5" stroke="#A8CC80" stroke-width="1.2" transform="rotate(40 19 14)"/></svg></span>
+    <p>The GNN's graph structure comes from <strong>pen and stall assignments</strong> — data every farm records. Two cows in the same pen = an edge. Same feeding station = a weighted edge. Tauron doesn't need GPS proximity sensors to know which cows are near each other. <strong>It just needs to know where they sleep and eat.</strong></p>
+  </div>
+
+  <div class="eyebrow">Implementation</div>
+  <h2>How Tauron Works</h2>
+  <p class="intro-text">From farm data to farmer alert. Understanding this end-to-end is essential for every team member — each phase of the build corresponds to one of these steps.</p>
+
+  <div class="impl-grid">
+    <div class="impl-card">
+      <div class="impl-head">
+        <div class="impl-num">Step 01</div>
+        <h3>Data Ingestion</h3>
+        <div class="impl-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h16v3L12 13v6l-2-1v-5L3 6V3z" stroke="#6A9E48" stroke-width="1.4" stroke-linejoin="round" fill="none"/><path d="M7 3h8" stroke="#6A9E48" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="impl-body">
+        <p>Farmers get data in one of three ways. All three paths normalize to the same internal format — <code>cow_id, date, metric, value</code> — so the rest of the pipeline is identical regardless of source.</p>
+        <p><strong>CSV Upload:</strong> Farmer exports their existing spreadsheet (milk records, vet logs) and uploads it weekly. Tauron parses it automatically with a flexible column-mapping step.</p>
+        <p><strong>Manual Entry:</strong> A 5-field form in the app. Cow ID, milk yield, health event, pen assignment, notes. Under 2 minutes per day.</p>
+        <p><strong>API Pull:</strong> For farms with automated milking systems (DeLaval, Lely, GEA), Tauron connects directly via their export API. Fully automated — zero farmer effort after setup.</p>
+        <div class="code-block">
+          <code><span class="cm"># Example: Tauron ingestion endpoint</span>
+<span class="ck">POST</span> <span class="cv">/api/ingest</span>
+<span class="cm"># Accepts: CSV, JSON, or direct API webhook</span>
+<span class="cm"># Normalises to: cow_id, date, metric, value</span></code>
+        </div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-head">
+        <div class="impl-num">Step 02</div>
+        <h3>Graph Construction</h3>
+        <div class="impl-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="2.2" stroke="#6A9E48" stroke-width="1.3"/><circle cx="4" cy="5" r="1.6" stroke="#6A9E48" stroke-width="1.3"/><circle cx="18" cy="5" r="1.6" stroke="#6A9E48" stroke-width="1.3"/><circle cx="4" cy="17" r="1.6" stroke="#6A9E48" stroke-width="1.3"/><circle cx="18" cy="17" r="1.6" stroke="#6A9E48" stroke-width="1.3"/><line x1="5.4" y1="6.1" x2="9.1" y2="9.4" stroke="#6A9E48" stroke-width="1.1"/><line x1="16.6" y1="6.1" x2="12.9" y2="9.4" stroke="#6A9E48" stroke-width="1.1"/><line x1="5.4" y1="15.9" x2="9.1" y2="12.6" stroke="#6A9E48" stroke-width="1.1"/><line x1="16.6" y1="15.9" x2="12.9" y2="12.6" stroke="#6A9E48" stroke-width="1.1"/></svg></div>
+      </div>
+      <div class="impl-body">
+        <p>From the ingested data, Tauron builds a <strong>dynamic contact graph</strong> of the herd every 24 hours (or every 6 hours with wearable data).</p>
+        <p><strong>Nodes:</strong> Each cow is a node. Node features = her rolling 7-day time series of milk yield, health events, and any available sensor readings.</p>
+        <p><strong>Edges:</strong> Built from pen assignments and feeding station logs. Cows sharing a pen get a base edge. Cows recorded at the same feeding station within a 2-hour window get a weighted edge proportional to co-visitation frequency.</p>
+        <p><strong>No proximity sensor needed</strong> — barn layout + feeding logs are sufficient to approximate the contact network that matters for disease transmission.</p>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-head">
+        <div class="impl-num">Step 03</div>
+        <h3>GNN Inference</h3>
+        <div class="impl-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="3" stroke="#6A9E48" stroke-width="1.3"/><line x1="11" y1="8" x2="11" y2="3" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/><line x1="13.6" y1="9.4" x2="17.5" y2="6" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/><line x1="13.6" y1="12.6" x2="17.5" y2="16" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="14" x2="11" y2="19" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/><line x1="8.4" y1="12.6" x2="4.5" y2="16" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/><line x1="8.4" y1="9.4" x2="4.5" y2="6" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/><circle cx="11" cy="3" r="1.2" fill="#6A9E48"/><circle cx="17.5" cy="6" r="1.2" fill="#6A9E48"/><circle cx="17.5" cy="16" r="1.2" fill="#6A9E48"/><circle cx="11" cy="19" r="1.2" fill="#6A9E48"/><circle cx="4.5" cy="16" r="1.2" fill="#6A9E48"/><circle cx="4.5" cy="6" r="1.2" fill="#6A9E48"/></svg></div>
+      </div>
+      <div class="impl-body">
+        <p><strong>We train one model.</strong> A single GraphSAGE network with a GRU temporal layer on top. It takes the contact graph as input and outputs one risk score per cow per disease category (mastitis, BRD, lameness) for the next 48 hours.</p>
+        <p><strong>How training works:</strong> We use the Wageningen University public dairy sensor dataset as our base. Because it doesn't include labeled disease outbreak events, we synthetically inject disease events — programmatically marking cows as "sick" and walking the contagion forward through the contact graph using documented transmission rates from published epidemiology literature. This gives us supervised labels (sick / not sick at T+48h) for every cow in every time window.</p>
+        <p><strong>Why one model is enough:</strong> GraphSAGE learns a general representation of "health signal propagation through a contact network." Mastitis, BRD, and lameness all share the same underlying pattern — a degraded cow's neighbors become elevated risk. We use a multi-head output layer (one head per disease) rather than three separate models. Same graph, same weights, three output neurons.</p>
+        <p><strong>The key innovation:</strong> when Cow A's health signals degrade, <strong>her neighbors' risk scores update through message passing</strong> — even if they look fine right now. A threshold alert or LSTM watching each cow in isolation structurally cannot do this.</p>
+        <div class="code-block">
+          <code><span class="cm"># One model, three output heads</span>
+<span class="ck">from</span> <span class="cv">torch_geometric.nn</span> <span class="ck">import</span> SAGEConv
+<span class="cm"># Encoder: GraphSAGE layers (2–3 hops)</span>
+<span class="cm"># Temporal: GRU over 7-day rolling window</span>
+<span class="cm"># Decoder: Linear → 3 risk scores per cow</span>
+<span class="cm"># Loss: Binary cross-entropy (sick/not per disease)</span></code>
+        </div>
+      </div>
+    </div>
+
+    <div class="impl-card">
+      <div class="impl-head">
+        <div class="impl-num">Step 04</div>
+        <h3>XAI + Alert Generation</h3>
+        <div class="impl-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 3C7.7 3 5 5.5 5 8.6c0 1.8.9 3.4 2.2 4.4L6 18l4.2-2.1c.3 0 .5.1.8.1 3.3 0 6-2.5 6-5.6C17 7.5 14.3 3 11 3z" stroke="#6A9E48" stroke-width="1.3" stroke-linejoin="round"/><line x1="8" y1="9" x2="14" y2="9" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/><line x1="8" y1="11.5" x2="12" y2="11.5" stroke="#6A9E48" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="impl-body">
+        <p>For every high-risk prediction, <strong>GNNExplainer</strong> traces which graph edges and which node features contributed most to the risk score. This produces a structured explanation:</p>
+        <div class="code-block">
+          <code><span class="cm"># GNNExplainer output (structured)</span>
+{
+  <span class="cv">"cow_id"</span>: <span class="cv">"#47"</span>,
+  <span class="cv">"risk"</span>: <span class="cv">0.87</span>,
+  <span class="cv">"top_edge"</span>: <span class="cv">"#31 (bunk_C, 5.8h)"</span>,
+  <span class="cv">"top_feature"</span>: <span class="cv">"milk_yield_delta: -18%"</span>
+}</code>
+        </div>
+        <p>This JSON is passed to the <strong>Claude API</strong>, which converts it into a one-sentence plain-English alert. The farmer reads: <em>"Cow #47 — high mastitis risk. Milk yield dropped 18% and she shared Feed Bunk C with Cow #31, who was treated Tuesday. Isolate and check temperature."</em></p>
+        <p>No jargon. No confidence intervals. Just what to do.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIPELINE SUMMARY -->
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="pipe-arrow"></div>
+      <div class="pipe-n">01 / INPUT</div>
+      <h4>Farm Data</h4>
+      <p>CSV, manual entry, or API. Milk yield, vet logs, pen assignments.</p>
+      <div class="pipe-tag">Any tier</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-arrow"></div>
+      <div class="pipe-n">02 / GRAPH</div>
+      <h4>Contact Graph</h4>
+      <p>Dynamic herd graph built from pen + feeding station records. Updates daily.</p>
+      <div class="pipe-tag">PyG DynamicEdge</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-arrow"></div>
+      <div class="pipe-n">03 / MODEL</div>
+      <h4>GNN Inference</h4>
+      <p>GraphSAGE + GRU. Message passing updates neighbor risk scores. Three-head output.</p>
+      <div class="pipe-tag">torch_geometric</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-arrow"></div>
+      <div class="pipe-n">04 / XAI</div>
+      <h4>Explain + Rank</h4>
+      <p>GNNExplainer identifies causal edges and features. Risk scores ranked.</p>
+      <div class="pipe-tag">GNNExplainer</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-n">05 / OUTPUT</div>
+      <h4>Farmer Alert</h4>
+      <p>Claude API generates plain-English action. Displayed in the demo UI.</p>
+      <div class="pipe-tag">Claude API</div>
+    </div>
+  </div>
+
+  <div class="tech-row">
+    <div class="tech-card">
+      <div class="tl">Backend</div>
+      <h4>FastAPI + Python</h4>
+      <p>REST API handles data ingestion, graph construction, model inference, and alert generation. Runs locally on one team member's laptop for the demo — no deployment needed.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tl">ML</div>
+      <h4>PyTorch Geometric</h4>
+      <p>One GraphSAGE model with GRU temporal layer and three-head output (mastitis, BRD, lameness). GNNExplainer built-in. Trained on Wageningen dataset with synthetic disease event injection for supervised labels.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tl">Frontend</div>
+      <h4>React + D3.js</h4>
+      <p>Single-page React app running locally, pointed at the local FastAPI backend. D3.js for the animated herd graph. All data is pre-seeded — no live farm input needed for the demo.</p>
+    </div>
+  </div>
+
+  <!-- BUILD ORDER -->
+  <div class="eyebrow">Build Order</div>
+  <h2>What to Build and In What Order</h2>
+  <p class="intro-text">36 hours. Here is the exact sequence so no team blocks another. Each phase has a clear output that the next phase depends on.</p>
+
+  <div style="display:flex; flex-direction:column; gap:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; margin-bottom:72px;">
+
+    <div style="display:grid; grid-template-columns:120px 1fr 200px; border-bottom:1px solid var(--line); background:var(--barn);">
+      <div style="padding:10px 18px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(242,237,228,0.4);">Phase</div>
+      <div style="padding:10px 18px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(242,237,228,0.4);">What gets built</div>
+      <div style="padding:10px 18px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(242,237,228,0.4);">Output / handoff</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:120px 1fr 200px; border-bottom:1px solid var(--line); background:var(--card);">
+      <div style="padding:18px; border-right:1px solid var(--line);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--mist); letter-spacing:0.1em; margin-bottom:4px;">PHASE 1</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Data &amp; Synthetic Labels</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 1–6</div>
+      </div>
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+        Download the <strong>Wageningen dairy sensor dataset</strong>. Write a Python script to simulate a 60-cow barn: assign cows to pens and feeding stations, define a stall adjacency matrix. Write the <strong>disease injection function</strong> — picks a random cow at T=0, marks her sick, propagates to pen-mates at documented transmission probability over 7-day windows. Run it 500+ times to generate a labeled dataset of (graph snapshot → sick/not at T+48h).
+      </div>
+      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+        <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">dataset.pt</code> — PyG-formatted graph snapshots with labels. ML team can start training immediately.
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:120px 1fr 200px; border-bottom:1px solid var(--line); background:var(--card);">
+      <div style="padding:18px; border-right:1px solid var(--line);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--mist); letter-spacing:0.1em; margin-bottom:4px;">PHASE 2</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Graph Construction</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 1–8 (parallel)</div>
+      </div>
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+        Write <strong>build_graph(farm_data)</strong> — the function that takes raw farm records (pen assignments, feeding logs, milk yields, vet events) and returns a PyG <code>Data</code> object. Nodes = cows with feature vectors. Edges = shared pen (weight 1.0) or shared feeding station within a 2-hour window (weight = co-visit frequency). Node features = rolling 7-day window of all available metrics, zero-padded for missing data. For the demo, this runs once on the pre-seeded dataset.
+      </div>
+      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+        <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">build_graph()</code> function with unit tests. Model team plugs this directly into the training loop.
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:120px 1fr 200px; border-bottom:1px solid var(--line); background:var(--card);">
+      <div style="padding:18px; border-right:1px solid var(--line);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--mist); letter-spacing:0.1em; margin-bottom:4px;">PHASE 3</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Train the GNN</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 6–16</div>
+      </div>
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+        Build the model: <strong>2 GraphSAGE layers</strong> (neighborhood aggregation, 2-hop radius) → <strong>GRU layer</strong> (rolls up 7-day temporal sequence) → <strong>3-head linear output</strong> (one sigmoid per disease). Train with binary cross-entropy loss, Adam optimizer, 80/20 split on the synthetic dataset. Run GNNExplainer on validation samples to confirm it produces meaningful edge attributions — if the explainer points to the actual injected transmission edge, the model is learning the right thing. Save weights as <code>tauron_model.pt</code>.
+      </div>
+      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+        <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">tauron_model.pt</code> + <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">predict(graph)</code> function returning risk scores + explainer output.
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:120px 1fr 200px; border-bottom:1px solid var(--line); background:var(--card);">
+      <div style="padding:18px; border-right:1px solid var(--line);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--mist); letter-spacing:0.1em; margin-bottom:4px;">PHASE 4</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Backend API</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 8–20 (parallel)</div>
+      </div>
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+        FastAPI app with three endpoints needed for the demo: <strong>GET /herd</strong> (returns all cow risk scores + graph edges for the pre-seeded farm), <strong>GET /alert/{cow_id}</strong> (returns GNNExplainer output for one cow), <strong>GET /explain/{cow_id}</strong> (calls the Claude API with the structured explainer JSON and returns the plain-English alert sentence). Runs on <code>localhost:8000</code> — the React frontend points directly at it. No deployment, no auth, no database needed.
+      </div>
+      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+        <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">localhost:8000</code> running with seeded demo data. Frontend team points their React app at it.
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:120px 1fr 200px; border-bottom:1px solid var(--line); background:var(--card);">
+      <div style="padding:18px; border-right:1px solid var(--line);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--mist); letter-spacing:0.1em; margin-bottom:4px;">PHASE 5</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Frontend Demo App</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 8–28 (parallel)</div>
+      </div>
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+        React app running locally with four screens (see App section below). <strong>Start with hardcoded mock data</strong> so frontend doesn't block on the backend. Wire to <code>localhost:8000</code> once Phase 4 is up. The D3 herd graph is the priority — it's the demo centrepiece. Build it first, polish it last. Alert feed second. Data entry form third. Impact dashboard fourth. The whole app runs in a browser tab on the demo laptop — no deployment needed.
+      </div>
+      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+        <strong>Hands off:</strong> React app running on <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">localhost:3000</code>, connected to backend, demo flow confirmed working end to end.
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:120px 1fr 200px; background:rgba(44,90,30,0.04); border-top:2px solid var(--sage);">
+      <div style="padding:18px; border-right:1px solid var(--line);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--mist); letter-spacing:0.1em; margin-bottom:4px;">PHASE 6</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--green); line-height:1.2;">Demo Hardening</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 28–36</div>
+      </div>
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+        Seed the demo farm with a pre-baked 30-day history and one staged disease event (Cow #47, mastitis, Tuesday). Confirm the model fires the right alert and the D3 edge glows on the correct transmission path. Record a 90-second screen capture as backup. Rehearse the live demo flow: open app → show herd graph → scrub to Tuesday → alert fires → tap explanation → show plain-English text. Every person on the team should be able to run this demo cold.
+      </div>
+      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+        <strong>Output:</strong> Reproducible live demo + screen-capture backup. Pitch deck complete. Everyone briefed on what each component does.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FARMER APP -->
+  <div class="app-section">
+    <div class="eyebrow">The Farmer App</div>
+    <h2>Designed for 6am in a Barn</h2>
+    <p class="intro-text">Large text. One action per screen. Explains itself. Works on any phone without installing anything — it's a Progressive Web App accessible via browser bookmark.</p>
+
+    <div class="app-frame">
+      <!-- Phone mockup -->
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-statusbar">
+              <div class="phone-time">6:14</div>
+              <div class="phone-icons">▲▲ WiFi ●</div>
+            </div>
+
+            <div class="app-topbar">
+              <div class="app-logo-sm">Tau<em>ron</em></div>
+              <div class="app-farm-name">MEADOWBROOK DAIRY · 58 COWS</div>
+            </div>
+
+            <div class="app-summary">
+              <div class="sum-cell">
+                <span class="sum-val val-ok">53</span>
+                <span class="sum-lbl">Healthy</span>
+              </div>
+              <div class="sum-cell">
+                <span class="sum-val val-warn">3</span>
+                <span class="sum-lbl">Monitor</span>
+              </div>
+              <div class="sum-cell">
+                <span class="sum-val val-risk">2</span>
+                <span class="sum-lbl">Act Now</span>
+              </div>
+            </div>
+
+            <div class="app-section-label">TODAY'S ALERTS</div>
+
+            <div class="app-alert al-high">
+              <div class="al-row1">
+                <div class="al-dot dot-high"></div>
+                <div class="al-title">Cow #47 — Mastitis Risk</div>
+                <div class="al-conf">87%</div>
+              </div>
+              <div class="al-body">Milk down 18%. Shared bunk with #31 (treated Tue). <strong>Isolate + temp check.</strong></div>
+              <div class="al-action">→ View explanation</div>
+            </div>
+
+            <div class="app-alert al-high">
+              <div class="al-row1">
+                <div class="al-dot dot-high"></div>
+                <div class="al-title">Cow #22 — BRD Risk</div>
+                <div class="al-conf">73%</div>
+              </div>
+              <div class="al-body">Activity down 22% over 3 days. Contact with pen-mate #31. <strong>Monitor breathing.</strong></div>
+              <div class="al-action">→ View explanation</div>
+            </div>
+
+            <div class="app-alert al-warn">
+              <div class="al-row1">
+                <div class="al-dot dot-warn"></div>
+                <div class="al-title">Cow #08 — Watch</div>
+                <div class="al-conf">41%</div>
+              </div>
+              <div class="al-body">Mild milk drop. Same pen as #47. Low risk, check at next milking.</div>
+            </div>
+
+            <div class="app-nav">
+              <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="9" cy="10.5" rx="5" ry="4" stroke="#6A9E48" stroke-width="1.2"/><ellipse cx="9" cy="12" rx="2.5" ry="1.6" stroke="#6A9E48" stroke-width="1"/><path d="M4.5 8.5c-.8-.8-1.6-2.4-1.2-3.6S4.5 3.5 4.8 4.2" stroke="#6A9E48" stroke-width="1" stroke-linecap="round"/><path d="M13.5 8.5c.8-.8 1.6-2.4 1.2-3.6S13.5 3.5 13.2 4.2" stroke="#6A9E48" stroke-width="1" stroke-linecap="round"/></svg><span class="nav-lbl">Alerts</span></div>
+              <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="9" r="1.8" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><circle cx="3" cy="3.5" r="1.3" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><circle cx="15" cy="3.5" r="1.3" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><circle cx="3" cy="14.5" r="1.3" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><circle cx="15" cy="14.5" r="1.3" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><line x1="4.1" y1="4.5" x2="7.4" y2="7.5" stroke="rgba(242,237,228,0.4)" stroke-width="0.9"/><line x1="13.9" y1="4.5" x2="10.6" y2="7.5" stroke="rgba(242,237,228,0.4)" stroke-width="0.9"/><line x1="4.1" y1="13.5" x2="7.4" y2="10.5" stroke="rgba(242,237,228,0.4)" stroke-width="0.9"/><line x1="13.9" y1="13.5" x2="10.6" y2="10.5" stroke="rgba(242,237,228,0.4)" stroke-width="0.9"/></svg><span class="nav-lbl">Herd Map</span></div>
+              <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3.5" y="2" width="11" height="14" rx="1.5" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><line x1="6" y1="6" x2="12" y2="6" stroke="rgba(242,237,228,0.4)" stroke-width="1" stroke-linecap="round"/><line x1="6" y1="8.5" x2="12" y2="8.5" stroke="rgba(242,237,228,0.4)" stroke-width="1" stroke-linecap="round"/><line x1="6" y1="11" x2="9.5" y2="11" stroke="rgba(242,237,228,0.4)" stroke-width="1" stroke-linecap="round"/></svg><span class="nav-lbl">Log</span></div>
+              <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="10" width="3" height="6" rx="0.7" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><rect x="7.5" y="6.5" width="3" height="9.5" rx="0.7" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/><rect x="13" y="3.5" width="3" height="12.5" rx="0.7" stroke="rgba(242,237,228,0.4)" stroke-width="1.1"/></svg><span class="nav-lbl">Impact</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen descriptions -->
+      <div class="app-screens">
+        <div class="screen-desc">
+          <div class="screen-head">
+            <div class="sn">Screen 01</div>
+            <h4>Morning Alert Feed</h4>
+            <div class="sicon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="10" cy="12" rx="6" ry="5" stroke="#F2EDE4" stroke-width="1.3"/><ellipse cx="10" cy="13.5" rx="3" ry="2" stroke="#F2EDE4" stroke-width="1.1"/><circle cx="8.5" cy="13" r="0.6" fill="#F2EDE4"/><circle cx="11.5" cy="13" r="0.6" fill="#F2EDE4"/><path d="M5 10c-1-1-2-3-1.5-4.5S5.5 4 6 5" stroke="#F2EDE4" stroke-width="1.2" stroke-linecap="round"/><path d="M15 10c1-1 2-3 1.5-4.5S14.5 4 14 5" stroke="#F2EDE4" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="10" r="1.4" stroke="#F2EDE4" stroke-width="1.1"/><circle cx="12" cy="10" r="1.4" stroke="#F2EDE4" stroke-width="1.1"/></svg></div>
+          </div>
+          <div class="screen-body">
+            <p>The first thing a farmer sees every morning. <strong>Three numbers at the top</strong>: Healthy, Monitor, Act Now. Below that, the day's alerts ranked by urgency — each one with a plain-English sentence and a single recommended action.</p>
+            <p>Tapping "View explanation" reveals the XAI trace: which cow she was near, which metric dropped, and how confident the model is. No graphs, no probability distributions — just the reason in one sentence.</p>
+            <div class="feature-chips">
+              <div class="chip">plain-English alerts</div>
+              <div class="chip">tap for XAI reason</div>
+              <div class="chip">single action per alert</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-desc">
+          <div class="screen-head">
+            <div class="sn">Screen 02</div>
+            <h4>Herd Map (Desktop / Tablet)</h4>
+            <div class="sicon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="2" stroke="#F2EDE4" stroke-width="1.2"/><circle cx="3.5" cy="4" r="1.4" stroke="#F2EDE4" stroke-width="1.2"/><circle cx="16.5" cy="4" r="1.4" stroke="#F2EDE4" stroke-width="1.2"/><circle cx="3.5" cy="16" r="1.4" stroke="#F2EDE4" stroke-width="1.2"/><circle cx="16.5" cy="16" r="1.4" stroke="#F2EDE4" stroke-width="1.2"/><line x1="4.8" y1="5" x2="8.3" y2="8.4" stroke="#F2EDE4" stroke-width="1"/><line x1="15.2" y1="5" x2="11.7" y2="8.4" stroke="#F2EDE4" stroke-width="1"/><line x1="4.8" y1="15" x2="8.3" y2="11.6" stroke="#F2EDE4" stroke-width="1"/><line x1="15.2" y1="15" x2="11.7" y2="11.6" stroke="#F2EDE4" stroke-width="1"/></svg></div>
+          </div>
+          <div class="screen-body">
+            <p>The animated D3.js force-directed graph — the <strong>demo centrepiece</strong>. Each cow is a node pulsing green, amber, or red by risk score. Edges glow when a disease transmission pathway is active. Click any node to see that cow's sensor history and alert detail.</p>
+            <p>On mobile this view is simplified to a <strong>barn-layout grid</strong> (pen rows, stall columns) with colour-coded cells — more readable in a barn than a graph.</p>
+            <div class="feature-chips">
+              <div class="chip">force-directed D3 graph</div>
+              <div class="chip">live edge glow</div>
+              <div class="chip">mobile barn-grid fallback</div>
+              <div class="chip">click-to-detail</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-desc">
+          <div class="screen-head">
+            <div class="sn">Screen 03</div>
+            <h4>Data Entry &amp; Log</h4>
+            <div class="sicon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="12" height="15" rx="1.5" stroke="#F2EDE4" stroke-width="1.3"/><line x1="7" y1="7.5" x2="13" y2="7.5" stroke="#F2EDE4" stroke-width="1.1" stroke-linecap="round"/><line x1="7" y1="10.5" x2="13" y2="10.5" stroke="#F2EDE4" stroke-width="1.1" stroke-linecap="round"/><line x1="7" y1="13.5" x2="10.5" y2="13.5" stroke="#F2EDE4" stroke-width="1.1" stroke-linecap="round"/><path d="M8 3V2.5a2 2 0 014 0V3" stroke="#F2EDE4" stroke-width="1.2"/></svg></div>
+          </div>
+          <div class="screen-body">
+            <p>A <strong>5-field form</strong> for daily manual entry — Cow ID, milk yield today, any health event, pen assignment, notes. Designed to take under 2 minutes. Or skip it entirely and upload a CSV from parlor records.</p>
+            <p>The log tab shows a scrollable history of all entries and model predictions so farmers can verify that the model's past alerts were correct — building trust over time.</p>
+            <div class="feature-chips">
+              <div class="chip">5-field form</div>
+              <div class="chip">CSV upload</div>
+              <div class="chip">prediction history</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-desc">
+          <div class="screen-head">
+            <div class="sn">Screen 04</div>
+            <h4>Sustainability Impact</h4>
+            <div class="sicon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="11" width="3" height="6" rx="0.8" stroke="#F2EDE4" stroke-width="1.2"/><rect x="8.5" y="7" width="3" height="10" rx="0.8" stroke="#F2EDE4" stroke-width="1.2"/><rect x="14" y="4" width="3" height="13" rx="0.8" stroke="#F2EDE4" stroke-width="1.2"/><line x1="2" y1="17.5" x2="18" y2="17.5" stroke="#F2EDE4" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="screen-body">
+            <p>Four running metrics: antibiotic treatments avoided, milk yield saved (in dollars), average hours of early detection lead time, and total alerts confirmed accurate.</p>
+            <p>Also shows a simple data quality indicator — "You're on Tier 1. Add automated milking data to increase prediction accuracy to ~74%." This is the upgrade nudge that drives Tauron's long-term adoption curve.</p>
+            <div class="feature-chips">
+              <div class="chip">antibiotic reduction</div>
+              <div class="chip">yield saved ($)</div>
+              <div class="chip">tier upgrade nudge</div>
+              <div class="chip">accuracy history</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FARMER ONBOARDING FLOW -->
+  <div class="eyebrow">Onboarding</div>
+  <h2>How a Farmer Gets Started</h2>
+  <p class="intro-text">Four steps from zero to first alert.</p>
+
+  <div class="entry-flow">
+    <div class="ef-step">
+      <div class="ef-arrow"></div>
+      <div class="ef-num">Day 1</div>
+      <span class="ef-icon"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="2" width="12" height="22" rx="2.5" stroke="#5C3D1E" stroke-width="1.4"/><line x1="10.5" y1="5.5" x2="15.5" y2="5.5" stroke="#5C3D1E" stroke-width="1.2" stroke-linecap="round"/><circle cx="13" cy="21" r="1.2" stroke="#5C3D1E" stroke-width="1.1"/></svg></span>
+      <h4>Open the URL</h4>
+      <p>Farmer opens the app on any browser. No installation, no login for the demo. Farm name and herd size pre-loaded.</p>
+    </div>
+    <div class="ef-step">
+      <div class="ef-arrow"></div>
+      <div class="ef-num">Day 1 — 10 min</div>
+      <span class="ef-icon"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 13L13 4l10 9" stroke="#5C3D1E" stroke-width="1.4" stroke-linejoin="round"/><rect x="5" y="13" width="16" height="10" rx="1" stroke="#5C3D1E" stroke-width="1.4"/><rect x="10" y="17" width="6" height="6" rx="0.8" stroke="#5C3D1E" stroke-width="1.2"/><line x1="13" y1="17" x2="13" y2="23" stroke="#5C3D1E" stroke-width="1.1"/></svg></span>
+      <h4>Register Their Herd</h4>
+      <p>Enters cow IDs and pen/stall assignments. This single step builds the contact graph structure. Optionally uploads last month's milk records CSV.</p>
+    </div>
+    <div class="ef-step">
+      <div class="ef-arrow"></div>
+      <div class="ef-num">Days 1–7</div>
+      <span class="ef-icon"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 20l2-6 10-10 4 4-10 10-6 2z" stroke="#5C3D1E" stroke-width="1.4" stroke-linejoin="round"/><line x1="16" y1="6" x2="20" y2="10" stroke="#5C3D1E" stroke-width="1.3"/><line x1="8" y1="14" x2="12" y2="18" stroke="#5C3D1E" stroke-width="1.1"/></svg></span>
+      <h4>Daily 2-Min Log</h4>
+      <p>Enters basic daily readings. Tauron learns each cow's individual baseline. The model needs ~7 days of history before predictions become meaningful.</p>
+    </div>
+    <div class="ef-step">
+      <div class="ef-num">Day 8 onward</div>
+      <span class="ef-icon"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 4a7 7 0 017 7v4l2 3H4l2-3v-4a7 7 0 017-7z" stroke="#5C3D1E" stroke-width="1.4" stroke-linejoin="round"/><path d="M10.5 18a2.5 2.5 0 005 0" stroke="#5C3D1E" stroke-width="1.3"/><circle cx="13" cy="4" r="1.3" fill="#5C3D1E"/></svg></span>
+      <h4>First Alert Fires</h4>
+      <p>Farmer receives their first plain-English risk alert. If they confirm it was accurate, trust is established. This is the moment Tauron becomes indispensable.</p>
+    </div>
+  </div>
+
+
+  <!-- TEAM -->
+  <div class="eyebrow">Team Structure</div>
+  <h2>5–6 Person Split</h2>
+
+  <table class="team-tbl">
+    <thead>
+      <tr>
+        <th style="width:56px">N</th>
+        <th style="width:200px">Role</th>
+        <th>Deliverables</th>
+        <th>Stack</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="tn">2</div></td>
+        <td><span class="trole">ML Engineers</span>Data pipeline + model</td>
+        <td>Tier-aware data ingestion (CSV/API/manual), dynamic graph construction from pen + feeding records, GraphSAGE/TGN training on Wageningen dataset with synthetic disease injection, evaluation + risk score calibration across data tiers</td>
+        <td><div class="tstack">PyTorch Geometric · NumPy · scikit-learn · pandas</div></td>
+      </tr>
+      <tr>
+        <td><div class="tn">1</div></td>
+        <td><span class="trole">XAI + Backend</span>Explainability + API</td>
+        <td>GNNExplainer integration, Claude API plain-English alert generation, FastAPI endpoints for demo, risk score → alert routing</td>
+        <td><div class="tstack">GNNExplainer · FastAPI · Claude API</div></td>
+      </tr>
+      <tr>
+        <td><div class="tn">2</div></td>
+        <td><span class="trole">Frontend</span>React + visualization</td>
+        <td>React app (alert feed, data entry form, barn-grid view), D3.js animated herd graph for demo, individual cow XAI detail view, sustainability impact dashboard</td>
+        <td><div class="tstack">React · D3.js · Tailwind</div></td>
+      </tr>
+      <tr>
+        <td><div class="tn">1</div></td>
+        <td><span class="trole">Strategy + Pitch</span>Story + demo script</td>
+        <td>Slide deck, sustainability impact calculations (antibiotic reduction, yield saved), demo script, brief language mapping, onboarding flow walkthrough for pitch</td>
+        <td><div class="tstack">Figma · brief citations · published impact metrics</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="f-brand">Tau<em>ron</em></div>
+  <div class="f-meta">
+    Cornell Digital Ag Hackathon · Feb 27–Mar 1, 2026<br>
+    Theme · Data-Driven, Human-Centric Digital Agriculture Innovations<br>
+    Primary Challenge · Secondary Challenge · Branch 2 · Sensor-Optional
+  </div>
+</footer>
+
+</body>
+</html>
