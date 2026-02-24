@@ -897,10 +897,9 @@ h2.on-light { color: var(--barn); }
   z-index: 1;
 }
 
-/* ─── HIDE NAV IN FULLSCREEN ─── */
-:fullscreen .nav,
-:-webkit-full-screen .nav,
-:-moz-full-screen .nav {
+/* ─── HIDE NAV + HINT IN FULLSCREEN ─── */
+body.is-fullscreen .nav,
+body.is-fullscreen .hint {
   display: none;
 }
 
@@ -1546,6 +1545,10 @@ function toggleFullscreen() {
     document.exitFullscreen();
   }
 }
+
+document.addEventListener('fullscreenchange', () => {
+  document.body.classList.toggle('is-fullscreen', !!document.fullscreenElement);
+});
 
 // Init
 updateUI();
