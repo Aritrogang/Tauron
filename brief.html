@@ -182,8 +182,8 @@ h2 {
 }
 
 .intro-text {
-  font-size: 14.5px;
-  color: #555;
+  font-size: 14px;
+  color: #444;
   max-width: 700px;
   line-height: 1.75;
   margin-bottom: 36px;
@@ -272,9 +272,9 @@ h2 {
 }
 
 .tier p {
-  font-size: 13px;
-  color: #555;
-  line-height: 1.65;
+  font-size: 13.5px;
+  color: #444;
+  line-height: 1.7;
   margin-bottom: 14px;
 }
 
@@ -284,9 +284,9 @@ h2 {
 }
 
 .tier ul li {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.5;
+  font-size: 13px;
+  color: #444;
+  line-height: 1.6;
   padding: 3px 0;
   padding-left: 14px;
   position: relative;
@@ -473,8 +473,8 @@ h2 {
 
 .pipe-step p {
   font-size: 11.5px;
-  color: #666;
-  line-height: 1.55;
+  color: #444;
+  line-height: 1.6;
 }
 
 .pipe-tag {
@@ -521,9 +521,9 @@ h2 {
 }
 
 .tech-card p {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.6;
+  font-size: 13.5px;
+  color: #444;
+  line-height: 1.7;
 }
 
 /* ─── APP SECTION ─── */
@@ -800,9 +800,9 @@ h2 {
 }
 
 .screen-body p {
-  font-size: 13px;
-  color: #555;
-  line-height: 1.65;
+  font-size: 13.5px;
+  color: #444;
+  line-height: 1.7;
   margin-bottom: 10px;
 }
 
@@ -878,9 +878,9 @@ h2 {
 }
 
 .ef-step p {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.6;
+  font-size: 13.5px;
+  color: #444;
+  line-height: 1.7;
 }
 
 /* ─── TEAM ─── */
@@ -907,7 +907,7 @@ h2 {
   border-bottom: 1px solid var(--line);
   vertical-align: top;
   color: #444;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 .team-tbl tr:last-child td { border-bottom: none; }
@@ -1236,10 +1236,10 @@ footer {
         <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Data &amp; Synthetic Labels</div>
         <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 1–6</div>
       </div>
-      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13.5px; color:#444; line-height:1.7;">
         Download the <strong>Wageningen dairy sensor dataset</strong>. Write a Python script to simulate a 60-cow barn: assign cows to pens and feeding stations, define a stall adjacency matrix. Write the <strong>disease injection function</strong> — picks a random cow at T=0, marks her sick, propagates to pen-mates at documented transmission probability over 7-day windows. Run it 500+ times to generate a labeled dataset of (graph snapshot → sick/not at T+48h).
       </div>
-      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+      <div style="padding:18px; font-size:13.5px; color:#444; line-height:1.7;">
         <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">dataset.pt</code> — PyG-formatted graph snapshots with labels. ML team can start training immediately.
       </div>
     </div>
@@ -1250,10 +1250,10 @@ footer {
         <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Graph Construction</div>
         <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 1–8 (parallel)</div>
       </div>
-      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13.5px; color:#444; line-height:1.7;">
         Write <strong>build_graph(farm_data)</strong> — the function that takes raw farm records (pen assignments, feeding logs, milk yields, vet events) and returns a PyG <code>Data</code> object. Nodes = cows with feature vectors. Edges = shared pen (weight 1.0) or shared feeding station within a 2-hour window (weight = co-visit frequency). Node features = rolling 7-day window of all available metrics, zero-padded for missing data. For the demo, this runs once on the pre-seeded dataset.
       </div>
-      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+      <div style="padding:18px; font-size:13.5px; color:#444; line-height:1.7;">
         <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">build_graph()</code> function with unit tests. Model team plugs this directly into the training loop.
       </div>
     </div>
@@ -1264,10 +1264,10 @@ footer {
         <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Train the GNN</div>
         <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 6–16</div>
       </div>
-      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13.5px; color:#444; line-height:1.7;">
         Build the model: <strong>2 GraphSAGE layers</strong> (neighborhood aggregation, 2-hop radius) → <strong>GRU layer</strong> (rolls up 7-day temporal sequence) → <strong>3-head linear output</strong> (one sigmoid per disease). Train with binary cross-entropy loss, Adam optimizer, 80/20 split on the synthetic dataset. Run GNNExplainer on validation samples to confirm it produces meaningful edge attributions — if the explainer points to the actual injected transmission edge, the model is learning the right thing. Save weights as <code>tauron_model.pt</code>.
       </div>
-      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+      <div style="padding:18px; font-size:13.5px; color:#444; line-height:1.7;">
         <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">tauron_model.pt</code> + <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">predict(graph)</code> function returning risk scores + explainer output.
       </div>
     </div>
@@ -1278,10 +1278,10 @@ footer {
         <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Backend API</div>
         <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 8–20 (parallel)</div>
       </div>
-      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13.5px; color:#444; line-height:1.7;">
         FastAPI app with three endpoints needed for the demo: <strong>GET /herd</strong> (returns all cow risk scores + graph edges for the pre-seeded farm), <strong>GET /alert/{cow_id}</strong> (returns GNNExplainer output for one cow), <strong>GET /explain/{cow_id}</strong> (calls the Claude API with the structured explainer JSON and returns the plain-English alert sentence). Runs on <code>localhost:8000</code> — the React frontend points directly at it. No deployment, no auth, no database needed.
       </div>
-      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+      <div style="padding:18px; font-size:13.5px; color:#444; line-height:1.7;">
         <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">localhost:8000</code> running with seeded demo data. Frontend team points their React app at it.
       </div>
     </div>
@@ -1292,10 +1292,10 @@ footer {
         <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--barn); line-height:1.2;">Frontend Demo App</div>
         <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 8–28 (parallel)</div>
       </div>
-      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13.5px; color:#444; line-height:1.7;">
         React app running locally with four screens (see App section below). <strong>Start with hardcoded mock data</strong> so frontend doesn't block on the backend. Wire to <code>localhost:8000</code> once Phase 4 is up. The D3 herd graph is the priority — it's the demo centrepiece. Build it first, polish it last. Alert feed second. Data entry form third. Impact dashboard fourth. The whole app runs in a browser tab on the demo laptop — no deployment needed.
       </div>
-      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+      <div style="padding:18px; font-size:13.5px; color:#444; line-height:1.7;">
         <strong>Hands off:</strong> React app running on <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">localhost:3000</code>, connected to backend, demo flow confirmed working end to end.
       </div>
     </div>
@@ -1306,10 +1306,10 @@ footer {
         <div style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--green); line-height:1.2;">Demo Hardening</div>
         <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 28–36</div>
       </div>
-      <div style="padding:18px; border-right:1px solid var(--line); font-size:13px; color:#444; line-height:1.7;">
+      <div style="padding:18px; border-right:1px solid var(--line); font-size:13.5px; color:#444; line-height:1.7;">
         Seed the demo farm with a pre-baked 30-day history and one staged disease event (Cow #47, mastitis, Tuesday). Confirm the model fires the right alert and the D3 edge glows on the correct transmission path. Record a 90-second screen capture as backup. Rehearse the live demo flow: open app → show herd graph → scrub to Tuesday → alert fires → tap explanation → show plain-English text. Every person on the team should be able to run this demo cold.
       </div>
-      <div style="padding:18px; font-size:12px; color:#666; line-height:1.6;">
+      <div style="padding:18px; font-size:13.5px; color:#444; line-height:1.7;">
         <strong>Output:</strong> Reproducible live demo + screen-capture backup. Pitch deck complete. Everyone briefed on what each component does.
       </div>
     </div>
