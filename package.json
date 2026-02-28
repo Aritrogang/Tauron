@@ -1,0 +1,27 @@
+{
+  "name": "tauron",
+  "version": "1.0.0",
+  "description": "Cornell Digital Ag Hackathon Project # Collaborators - Aritro Ganguly - Adi Prathapa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adiprathapa/Tauron.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/adiprathapa/Tauron/issues"
+  },
+  "homepage": "https://github.com/adiprathapa/Tauron#readme",
+  "dependencies": {
+    "reveal.js": "^5.2.1"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}
