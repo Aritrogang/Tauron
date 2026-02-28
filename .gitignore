@@ -211,3 +211,4 @@ data/
 models/
 *.pt
 api.py
+tauron_pipeline.py
