@@ -94,12 +94,12 @@ const HerdMap = () => {
         const links = graphData.current.links.map(d => ({ ...d }));
 
         const simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id(d => d.id).distance(60))
-            .force("charge", d3.forceManyBody().strength(-120))
+            .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+            .force("charge", d3.forceManyBody().strength(-140))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collide", d3.forceCollide().radius(20))
-            .force("x", d3.forceX(width / 2).strength(0.08))
-            .force("y", d3.forceY(height / 2).strength(0.08));
+            .force("collide", d3.forceCollide().radius(22))
+            .force("x", d3.forceX(width / 2).strength(0.04))
+            .force("y", d3.forceY(height / 2).strength(0.04));
 
         // Colors based on CSS variables
         const getColor = (risk) => {
