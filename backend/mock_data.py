@@ -11,10 +11,13 @@
 # all_risks:    {mastitis, brd, lameness} scores — null for "ok" cows
 # adjacency:    N×N matrix, row/col order matches the cows list order exactly
 #
+import os
+
 # USE_MOCK: flip to False when tauron_model.pt is trained and graph_utils.py is live.
 # Emergency rollback: flip back to True — demo reverts in 30 seconds.
+# Also respects USE_MOCK env var (e.g. USE_MOCK=1 uvicorn backend.main:app)
 
-USE_MOCK = False
+USE_MOCK = os.environ.get("USE_MOCK", "").strip().lower() in ("1", "true", "yes") or False
 
 MOCK_HERD = {
     "cows": [

@@ -139,7 +139,11 @@ const SustainabilityImpact = () => {
                         {tierInfo.next_tier_description}
                     </p>
 
-                    <button style={{
+                    <button
+                        onClick={() => {
+                            alert(`Tier Upgrade: To unlock ${tierInfo.next_tier_label}, connect additional data sources such as activity monitors, milk meters, or rumination sensors. Contact your Tauron representative to begin integration.`);
+                        }}
+                        style={{
                         background: 'var(--bg)',
                         color: 'var(--green)',
                         border: 'none',

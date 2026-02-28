@@ -11,7 +11,8 @@ const ASSETS = [
   './components/DataEntryLog.js',
   './components/SustainabilityImpact.js',
   './components/Homepage.js',
-  './components/Layout.js'
+  './components/Layout.js',
+  './components/TierAbout.js'
 ];
 
 self.addEventListener('install', (e) => {

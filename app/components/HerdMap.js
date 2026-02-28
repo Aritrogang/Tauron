@@ -535,7 +535,28 @@ const HerdMap = () => {
                         </div>
                     )}
 
-                    <button style={{
+                    <button
+                        onClick={async () => {
+                            try {
+                                const res = await fetch(`${API}/api/history`);
+                                if (!res.ok) throw new Error(`Status ${res.status}`);
+                                const data = await res.json();
+                                const cowHistory = (data.predictions || []).filter(
+                                    p => String(p.cow_id) === String(selectedNode.cowId)
+                                );
+                                if (cowHistory.length === 0) {
+                                    alert(`No prediction history found for Cow ${selectedNode.cowId}.`);
+                                } else {
+                                    const lines = cowHistory.map(p =>
+                                        `${new Date(p.timestamp).toLocaleDateString()} — ${p.dominant_disease || 'N/A'} (${Math.round(p.risk_score * 100)}%) ${p.outcome ? `[${p.outcome}]` : '[pending]'}`
+                                    );
+                                    alert(`History for Cow ${selectedNode.cowId}:\n\n${lines.join('\n')}`);
+                                }
+                            } catch (e) {
+                                alert(`Could not load history: ${e.message}`);
+                            }
+                        }}
+                        style={{
                         width: '100%',
                         padding: '14px',
                         background: 'var(--sage)',

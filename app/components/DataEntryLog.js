@@ -11,9 +11,9 @@ const HEALTH_EVENTS = [
     { value: 'other',    label: 'Other' },
 ];
 
-const PENS = ['A1', 'A2', 'B1', 'Hospital'];
+const PENS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-const EMPTY_COW = { cow_id: '', yield_kg: '', pen: 'A1', health_event: 'none', notes: '' };
+const EMPTY_COW = { cow_id: '', yield_kg: '', pen: 'A', health_event: 'none', notes: '' };
 
 const DataEntryLog = () => {
     const [view, setView] = useState('entry');
@@ -152,6 +152,7 @@ const DataEntryLog = () => {
                 }
             }
             setSaved(true);
+            window.dispatchEvent(new Event('herd-refresh'));
             setTimeout(() => {
                 setSaved(false);
                 setNoteText('');
@@ -203,13 +204,14 @@ const DataEntryLog = () => {
                     const vals = line.split(',');
                     return headers.reduce((obj, h, i) => { obj[h] = vals[i]?.trim(); return obj; }, {});
                 });
-                const res = await fetch(`${API}/api/ingest`, {
+                const res = await fetch(`${API}/api/ingest/csv`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ records: data }),
                 });
                 if (!res.ok) throw new Error(`Server error ${res.status}`);
                 setUploadMsg({ text: `Uploaded ${data.length} records.`, ok: true });
+                window.dispatchEvent(new Event('herd-refresh'));
                 if (fileInputRef.current) fileInputRef.current.value = '';
                 setTimeout(() => setUploadMsg({ text: '', ok: true }), 4000);
             } catch (err) {

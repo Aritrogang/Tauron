@@ -11,7 +11,8 @@ const App = () => {
             case 'log': return <DataEntryLog />;
             case 'impact': return <SustainabilityImpact />;
             case 'about': return <TierAbout />;
-            default: return <MorningAlertFeed />;
+            case 'home': return <Homepage onNavigate={setCurrentTab} />;
+            default: return <Homepage onNavigate={setCurrentTab} />;
         }
     };
 
