@@ -45,6 +45,7 @@ const Layout = ({ currentTab, onTabChange, children }) => {
         { id: 'map', icon: 'map', label: 'Herd Map' },
         { id: 'log', icon: 'clipboard-list', label: 'Data Log' },
         { id: 'impact', icon: 'leaf', label: 'Impact' },
+        { id: 'about', icon: 'info', label: 'About' },
     ];
 
     const saveFarmInfo = () => {
