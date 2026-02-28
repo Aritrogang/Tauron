@@ -74,6 +74,34 @@ def _rebuild_herd() -> dict:
     return _herd_result
 
 
+def _snapshot_predictions() -> None:
+    """Snapshot current alert/watch cows into _prediction_log."""
+    global _prediction_counter
+    if _herd_result is None:
+        return
+    ts = datetime.now(UTC).isoformat()
+    cows = _herd_result.get("cows", []) if isinstance(_herd_result, dict) else _herd_result.cows
+    for cow in cows:
+        if isinstance(cow, dict):
+            cow_id, risk_score, status = cow["id"], cow["risk_score"], cow["status"]
+            dominant_disease, all_risks = cow.get("dominant_disease"), cow.get("all_risks")
+        else:
+            cow_id, risk_score, status = cow.id, cow.risk_score, cow.status
+            dominant_disease, all_risks = cow.dominant_disease, cow.all_risks
+        if status in ("alert", "watch"):
+            _prediction_counter += 1
+            _prediction_log.insert(0, {
+                "id": _prediction_counter,
+                "timestamp": ts,
+                "cow_id": cow_id,
+                "risk_score": round(risk_score, 3),
+                "dominant_disease": dominant_disease,
+                "all_risks": all_risks,
+                "status": status,
+                "outcome": None,
+            })
+
+
 # ---------------------------------------------------------------------------
 # Response models
 # Fields marked (new) are additions from multi-disease model — frontend can ignore
@@ -113,8 +141,15 @@ class IngestPayload(BaseModel):
     notes: Optional[str] = ""
 
 
+class OutcomePayload(BaseModel):
+    outcome: str  # "confirmed" | "unconfirmed"
+
+
 # In-memory log — resets on server restart (fine for hackathon demo)
 _ingest_log: list[dict] = []
+_prediction_log: list[dict] = []
+_prediction_counter: int = 0
+_initial_snapshot_done: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -224,11 +259,16 @@ async def get_herd():
     Adjacency matrix row/col order matches the cows list order exactly.
     Result is cached and only rebuilt when new data is ingested via /api/ingest.
     """
+    global _initial_snapshot_done
     if USE_MOCK:
         return MOCK_HERD
 
     if _herd_result is None:
-        return _rebuild_herd()
+        result = _rebuild_herd()
+        if not _initial_snapshot_done:
+            _snapshot_predictions()
+            _initial_snapshot_done = True
+        return result
     return _herd_result
 
 
@@ -297,6 +337,7 @@ async def ingest(payload: IngestPayload):
                 **new_fields,
             }
             _rebuild_herd()
+            _snapshot_predictions()
             herd_updated = True
 
     return {"status": "ok", "rows": 1, "total": len(_ingest_log), "herd_updated": herd_updated}
@@ -343,5 +384,42 @@ async def ingest_csv(payload: _CsvIngestPayload):
 
     if not USE_MOCK and cows_updated:
         _rebuild_herd()
+        _snapshot_predictions()
 
     return {"status": "ok", "rows": len(payload.records), "cows_updated": len(cows_updated)}
+
+
+@app.get("/api/history")
+async def get_history():
+    """
+    Returns prediction history for the DataEntryLog component.
+
+    Each entry includes cow_id, risk_score, dominant_disease, status (alert/watch),
+    timestamp, and outcome (null = pending, "confirmed" = accurate, "unconfirmed" = false alarm).
+
+    Also returns accuracy percentage (only over predictions that have received feedback).
+    """
+    with_outcome = [p for p in _prediction_log if p["outcome"] is not None]
+    confirmed = sum(1 for p in with_outcome if p["outcome"] == "confirmed")
+    accuracy = round(confirmed / len(with_outcome) * 100) if with_outcome else None
+    return {
+        "predictions": _prediction_log,
+        "accuracy": accuracy,
+        "total": len(_prediction_log),
+        "confirmed": confirmed,
+    }
+
+
+@app.post("/api/history/{prediction_id}/outcome")
+async def set_prediction_outcome(prediction_id: int, body: OutcomePayload):
+    """
+    Record a farmer's verdict on a past prediction.
+    outcome must be "confirmed" (alert was accurate) or "unconfirmed" (false alarm).
+    """
+    if body.outcome not in ("confirmed", "unconfirmed"):
+        raise HTTPException(status_code=422, detail="outcome must be 'confirmed' or 'unconfirmed'")
+    for pred in _prediction_log:
+        if pred["id"] == prediction_id:
+            pred["outcome"] = body.outcome
+            return {"status": "ok", "id": prediction_id, "outcome": body.outcome}
+    raise HTTPException(status_code=404, detail=f"Prediction {prediction_id} not found")

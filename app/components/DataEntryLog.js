@@ -20,26 +20,12 @@ const DataEntryLog = () => {
     }, [view, submitted, logs, loadingLogs, logsError]);
 
     useEffect(() => {
-        // Fetch logs on mount or when switching to log view
         if (view === 'log') {
             setLoadingLogs(true);
             setLogsError(null);
-            fetch(`${API}/api/logs`)
+            fetch(`${API}/api/history`)
                 .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
-                .then(data => {
-                    const formattedLogs = (data.logs || []).map(r => {
-                        const dateObj = r.timestamp ? new Date(r.timestamp) : new Date();
-                        const timeStr = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                        return {
-                            date: `Today, ${timeStr}`,
-                            cow: String(r.cow_id),
-                            yield: r.yield_kg != null ? `${r.yield_kg}L` : '—',
-                            event: r.health_event === 'none' ? 'None' : (r.health_event || 'None'),
-                            user: 'Manual Entry',
-                        };
-                    });
-                    setLogs(formattedLogs);
-                })
+                .then(data => setLogs(data.predictions || []))
                 .catch(err => setLogsError(String(err)))
                 .finally(() => setLoadingLogs(false));
         }
@@ -145,6 +131,20 @@ const DataEntryLog = () => {
         reader.readAsText(file);
     };
 
+    const handleOutcome = async (predId, outcome) => {
+        try {
+            const res = await fetch(`${API}/api/history/${predId}/outcome`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ outcome }),
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            setLogs(prev => prev.map(p => p.id === predId ? { ...p, outcome } : p));
+        } catch (err) {
+            console.error('Failed to update outcome:', err);
+        }
+    };
+
     const inputStyle = {
         width: '100%',
         background: 'rgba(255,255,255,0.02)',
@@ -168,6 +168,10 @@ const DataEntryLog = () => {
         letterSpacing: '0.1em',
         marginBottom: '6px',
     };
+
+    const withOutcome = logs.filter(p => p.outcome !== null && p.outcome !== undefined);
+    const confirmedCount = withOutcome.filter(p => p.outcome === 'confirmed').length;
+    const accuracy = withOutcome.length > 0 ? Math.round(confirmedCount / withOutcome.length * 100) : null;
 
     return (
         <div style={{ padding: '24px 20px', minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -311,28 +315,74 @@ const DataEntryLog = () => {
                 </>
             ) : (
                 <div style={{ flex: 1, overflowY: 'auto' }}>
-                    {loadingLogs ? (
-                        <div style={{ padding: '24px', textAlign: 'center', color: 'var(--mist)' }}>Loading logs…</div>
-                    ) : logsError ? (
-                        <div style={{ padding: '16px', background: 'var(--danger-bg)', border: '1px solid rgba(224,112,80,0.3)', borderRadius: '8px', color: 'var(--danger)' }}>
-                            Error loading logs: {logsError}
-                        </div>
-                    ) : logs.length === 0 ? (
-                        <div style={{ padding: '24px', textAlign: 'center', color: 'var(--mist)' }}>No entries yet today.</div>
-                    ) : (
-                        logs.map((log, i) => (
-                            <div key={i} className="card" style={{ padding: '16px', marginBottom: '12px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <strong>COW {log.cow}</strong>
-                                    <span style={{ fontSize: '12px', color: 'var(--mist)' }}>{log.user}</span>
-                                </div>
-                                <div style={{ fontSize: '13px', color: 'var(--mist)' }}>{log.date}</div>
-                                <div style={{ marginTop: '8px', display: 'flex', gap: '20px' }}>
-                                    <div><small>YIELD</small> <div>{log.yield}</div></div>
-                                    <div><small>EVENT</small> <div style={{ color: log.event === 'None' ? 'var(--sage)' : 'var(--danger)' }}>{log.event}</div></div>
+                    {logs.length > 0 && (
+                        <div style={{ background: 'var(--card)', border: '1px solid var(--line)', borderRadius: '8px', padding: '16px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                            <div style={{ fontSize: '36px', fontFamily: 'Cormorant Garamond, serif', fontWeight: 'bold', lineHeight: 1, color: accuracy === null ? 'var(--mist)' : accuracy >= 70 ? 'var(--sage)' : accuracy >= 50 ? 'var(--barn)' : 'var(--danger)' }}>
+                                {accuracy !== null ? `${accuracy}%` : '—'}
+                            </div>
+                            <div>
+                                <div style={{ fontWeight: 'bold', fontSize: '14px', fontFamily: 'Cormorant Garamond, serif' }}>Prediction Accuracy</div>
+                                <div style={{ fontSize: '12px', color: 'var(--mist)', marginTop: '2px' }}>
+                                    {confirmedCount} confirmed · {logs.filter(p => p.outcome === 'unconfirmed').length} false alarms · {logs.filter(p => !p.outcome).length} pending review
                                 </div>
                             </div>
-                        ))
+                        </div>
+                    )}
+                    {loadingLogs ? (
+                        <div style={{ padding: '24px', textAlign: 'center', color: 'var(--mist)' }}>Loading predictions…</div>
+                    ) : logsError ? (
+                        <div style={{ padding: '16px', background: 'var(--danger-bg)', border: '1px solid rgba(224,112,80,0.3)', borderRadius: '8px', color: 'var(--danger)' }}>
+                            Error: {logsError}
+                        </div>
+                    ) : logs.length === 0 ? (
+                        <div style={{ padding: '24px', textAlign: 'center', color: 'var(--mist)' }}>
+                            <div style={{ marginBottom: '8px' }}>No predictions yet.</div>
+                            <div style={{ fontSize: '14px' }}>Submit a record to generate your first alert prediction.</div>
+                        </div>
+                    ) : (
+                        logs.map(pred => {
+                            const ts = pred.timestamp ? new Date(pred.timestamp) : new Date();
+                            const timeStr = ts.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                            const disease = pred.dominant_disease
+                                ? pred.dominant_disease.charAt(0).toUpperCase() + pred.dominant_disease.slice(1)
+                                : 'Unknown';
+                            const riskPct = Math.round((pred.risk_score || 0) * 100);
+                            const isAlert = pred.status === 'alert';
+                            return (
+                                <div key={pred.id} className="card" style={{ padding: '16px', marginBottom: '12px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                                        <strong style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '18px' }}>COW {pred.cow_id}</strong>
+                                        <span style={{ fontSize: '11px', color: 'var(--mist)' }}>Today, {timeStr}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap' }}>
+                                        <span style={{ fontSize: '13px', fontWeight: 'bold', color: isAlert ? 'var(--danger)' : 'var(--barn)' }}>
+                                            {disease}
+                                        </span>
+                                        <span style={{ padding: '2px 8px', borderRadius: '99px', background: isAlert ? 'rgba(224,112,80,0.15)' : 'rgba(230,165,0,0.15)', color: isAlert ? 'var(--danger)' : 'var(--barn)', fontSize: '12px', fontWeight: 'bold' }}>
+                                            {riskPct}% risk
+                                        </span>
+                                        <span style={{ padding: '2px 8px', borderRadius: '99px', background: isAlert ? 'rgba(224,112,80,0.1)' : 'rgba(230,165,0,0.1)', color: isAlert ? 'var(--danger)' : 'var(--barn)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                            {pred.status}
+                                        </span>
+                                    </div>
+                                    {pred.outcome ? (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: pred.outcome === 'confirmed' ? 'var(--sage)' : 'var(--mist)' }}>
+                                            <i data-lucide={pred.outcome === 'confirmed' ? 'check-circle' : 'x-circle'} style={{ width: '14px', height: '14px' }}></i>
+                                            {pred.outcome === 'confirmed' ? 'Confirmed accurate' : 'Marked false alarm'}
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            <button onClick={() => handleOutcome(pred.id, 'confirmed')} style={{ flex: 1, padding: '8px', background: 'rgba(106,158,72,0.1)', border: '1px solid rgba(106,158,72,0.3)', borderRadius: '6px', color: 'var(--sage)', cursor: 'pointer', fontSize: '13px', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                                                <i data-lucide="check" style={{ width: '14px', height: '14px' }}></i> Confirmed
+                                            </button>
+                                            <button onClick={() => handleOutcome(pred.id, 'unconfirmed')} style={{ flex: 1, padding: '8px', background: 'rgba(180,180,180,0.1)', border: '1px solid rgba(180,180,180,0.3)', borderRadius: '6px', color: 'var(--mist)', cursor: 'pointer', fontSize: '13px', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                                                <i data-lucide="x" style={{ width: '14px', height: '14px' }}></i> False Alarm
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })
                     )}
                 </div>
             )}
