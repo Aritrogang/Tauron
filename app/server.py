@@ -1,38 +1,29 @@
+#!/usr/bin/env python3
 """
-app/server.py
--------------
-Launch the Tauron backend + frontend from a single process.
+Serve the Tauron frontend as a static site on http://localhost:3000
 
-The FastAPI app (backend/main.py) serves both:
-  - API routes:  /herd  /explain/{cow_id}  /api/ingest
-  - Frontend:    everything else → app/index.html (StaticFiles mount)
-
-Usage (from repo root):
-    python app/server.py              # production-style, port 8000
-    python app/server.py --dev        # auto-reload on file changes
-    uvicorn backend.main:app --reload # equivalent dev command
+Usage:
+    python app/server.py
 """
+import http.server
+import os
+import socketserver
 
-import argparse
-import sys
+PORT = 3000
 
-try:
-    import uvicorn
-except ImportError:
-    print("uvicorn not found — run: pip install uvicorn[standard]", file=sys.stderr)
-    sys.exit(1)
+# Serve from the app/ directory (this file's parent)
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Tauron server")
-    parser.add_argument("--dev", action="store_true", help="enable auto-reload")
-    parser.add_argument("--port", type=int, default=8000)
-    parser.add_argument("--host", default="127.0.0.1")
-    args = parser.parse_args()
 
-    print(f"Starting Tauron on http://{args.host}:{args.port}")
-    uvicorn.run(
-        "backend.main:app",
-        host=args.host,
-        port=args.port,
-        reload=args.dev,
-    )
+class _Handler(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, fmt, *args):
+        # Suppress noisy per-request logs; keep errors
+        if args and str(args[1]) not in ('200', '304'):
+            super().log_message(fmt, *args)
+
+
+with socketserver.TCPServer(("", PORT), _Handler) as httpd:
+    print(f"Tauron frontend  →  http://localhost:{PORT}")
+    print("Keep this running and open the URL above in your browser.")
+    print("Backend must also be running: uvicorn backend.main:app --reload")
+    httpd.serve_forever()
