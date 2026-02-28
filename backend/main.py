@@ -423,3 +423,45 @@ async def set_prediction_outcome(prediction_id: int, body: OutcomePayload):
             pred["outcome"] = body.outcome
             return {"status": "ok", "id": prediction_id, "outcome": body.outcome}
     raise HTTPException(status_code=404, detail=f"Prediction {prediction_id} not found")
+
+
+# ---------------------------------------------------------------------------
+# Data tier tiers — tracks data richness and drives the upgrade nudge on the
+# Impact screen. Tier 1 = manual records only (demo default). Tier 2 would
+# require an automated milking system integration (future work).
+# ---------------------------------------------------------------------------
+
+_DATA_TIERS = [
+    {
+        "tier": 1,
+        "label": "Manual Records Only",
+        "accuracy": 51,
+        "next_tier": 2,
+        "next_tier_label": "Automated Milking System",
+        "next_tier_accuracy": 74,
+        "next_tier_description": "Connect your parlor's automated milking system to capture real-time yield, conductivity, and somatic cell counts.",
+    },
+    {
+        "tier": 2,
+        "label": "Automated Milking Connected",
+        "accuracy": 74,
+        "next_tier": 3,
+        "next_tier_label": "Full Sensor Suite",
+        "next_tier_accuracy": 89,
+        "next_tier_description": "Add ear-tag accelerometers and rumen bolus sensors to capture activity and rumination in real time.",
+    },
+]
+
+
+@app.get("/api/tier")
+async def get_tier():
+    """
+    Returns the current data tier and next upgrade path.
+
+    Tier 1 (default): manual records only — demo starting point.
+    Tier 2: automated milking data connected (future integration).
+
+    Upgrade detection is based on _field_overrides data sources;
+    for the demo this always returns Tier 1.
+    """
+    return _DATA_TIERS[0]
