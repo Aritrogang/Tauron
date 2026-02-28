@@ -96,18 +96,37 @@ const HerdMap = () => {
             .selectAll("line")
             .data(links)
             .join("line")
-            .attr("stroke-width", d => Math.max(0.5, Math.sqrt(d.value) * 2));
+            .attr("stroke", d => d.isTransmission ? "#E07050" : "rgba(216, 208, 196, 0.4)")
+            .attr("stroke-opacity", d => d.isTransmission ? 0.9 : 0.6)
+            .attr("stroke-width", d => d.isTransmission ? 2.5 : Math.max(0.5, Math.sqrt(d.value) * 2))
+            .style("filter", d => d.isTransmission ? "url(#edge-glow)" : "none");
 
         const node = svg.append("g")
             .attr("stroke", "#FAF7F2")
             .attr("stroke-width", 1.5)
             .selectAll("circle")
             .data(nodes)
-            .join("circle")
-            .attr("r", d => d.risk === 'high' ? 12 : 8)
-            .attr("fill", d => getColor(d.risk))
+            .join("g")
             .style("cursor", "pointer")
             .on("click", (event, d) => setSelectedNode(d));
+
+        node.append("circle")
+            .attr("stroke", "#FAF7F2") // --card
+            .attr("stroke-width", 1.5)
+            .attr("r", d => d.riskLevel > 0.70 ? 14 : 8)
+            .attr("fill", d => getColor(d.risk))
+            .style("filter", d => d.riskLevel > 0.70 ? "url(#node-glow)" : "none");
+
+        node.filter(d => d.riskLevel > 0.70)
+            .append("text")
+            .text(d => d.id.replace('Cow ', ''))
+            .attr("text-anchor", "middle")
+            .attr("dy", "0.3em")
+            .attr("fill", "#FAF7F2")
+            .style("font-size", "9px")
+            .style("font-family", "JetBrains Mono, monospace")
+            .style("font-weight", "bold")
+            .style("pointer-events", "none");
 
         node.call(d3.drag()
             .on("start", (event, d) => {
@@ -139,8 +158,11 @@ const HerdMap = () => {
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
             node
-                .attr("cx", d => d.x = Math.max(15, Math.min(width - 15, d.x)))
-                .attr("cy", d => d.y = Math.max(15, Math.min(height - 15, d.y)));
+                .attr("transform", d => {
+                    d.x = Math.max(15, Math.min(width - 15, d.x));
+                    d.y = Math.max(15, Math.min(height - 15, d.y));
+                    return `translate(${d.x},${d.y})`;
+                });
         });
 
         return () => simulation.stop();
@@ -180,13 +202,22 @@ const HerdMap = () => {
                                         background: getColor(cow.risk),
                                         borderRadius: '8px',
                                         cursor: 'pointer',
-                                        boxShadow: cow.risk === 'high' ? '0 0 12px rgba(224, 112, 80, 0.5)' : 'none',
-                                        opacity: cow.risk === 'ok' ? 0.4 : 1,
+                                        boxShadow: cow.riskLevel > 0.70 ? '0 0 12px rgba(224, 112, 80, 0.6)' : 'none',
+                                        opacity: cow.riskLevel <= 0.4 ? 0.4 : 1,
                                         transition: 'all 0.2s',
-                                        animation: cow.risk === 'high' ? 'pulse-ring 2s infinite' : 'none'
+                                        animation: cow.riskLevel > 0.70 ? 'pulse-ring 2s infinite' : 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: '#FAF7F2',
+                                        fontFamily: 'JetBrains Mono, monospace',
+                                        fontSize: '10px',
+                                        fontWeight: 'bold'
                                     }}
                                     title={cow.id}
-                                />
+                                >
+                                    {cow.riskLevel > 0.70 ? cow.id.replace('Cow ', '') : ''}
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -220,18 +251,19 @@ const HerdMap = () => {
             </div>
 
             {selectedNode && (
-                <div style={{
+                <div className="panel-enter-active" style={{
                     position: 'absolute',
                     bottom: '40px',
                     left: '20px',
                     right: '20px',
                     background: 'var(--dark-bg)',
                     borderRadius: '12px',
-                    padding: '20px',
+                    padding: '24px',
                     color: 'var(--bg)',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-                    border: '1px solid #333',
-                    zIndex: 10
+                    boxShadow: selectedNode.riskLevel > 0.70 ? '0 0 30px rgba(224, 112, 80, 0.3)' : '0 20px 40px rgba(0,0,0,0.3)',
+                    border: selectedNode.riskLevel > 0.70 ? '1px solid var(--danger)' : '1px solid #333',
+                    zIndex: 10,
+                    transformOrigin: 'bottom center'
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                         <div>
