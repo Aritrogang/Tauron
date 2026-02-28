@@ -1132,7 +1132,7 @@ footer {
       </div>
       <div class="impl-body">
         <p><strong>We train one model.</strong> A single GraphSAGE network with a GRU temporal layer on top. It takes the contact graph as input and outputs one risk score per cow per disease category (mastitis, BRD, lameness) for the next 48 hours.</p>
-        <p><strong>How training works:</strong> We use the Wageningen University public dairy sensor dataset as our base. Because it doesn't include labeled disease outbreak events, we synthetically inject disease events — programmatically marking cows as "sick" and walking the contagion forward through the contact graph using documented transmission rates from published epidemiology literature. This gives us supervised labels (sick / not sick at T+48h) for every cow in every time window.</p>
+        <p><strong>How training works:</strong> We use the <strong>MmCows dataset</strong> (Purdue University / NEIS Lab — <a href="https://github.com/neis-lab/mmcows" target="_blank">github.com/neis-lab/mmcows</a>) as our base: 16 cows, 14 days, multimodal UWB proximity tracking. Because it doesn't include labeled disease outbreak events, we synthetically inject disease events — programmatically marking cows as "sick" and walking the contagion forward through the contact graph using documented transmission rates from published epidemiology literature. This gives us supervised labels (sick / not sick at T+48h) for every cow in every time window.</p>
         <p><strong>Why one model is enough:</strong> GraphSAGE learns a general representation of "health signal propagation through a contact network." Mastitis, BRD, and lameness all share the same underlying pattern — a degraded cow's neighbors become elevated risk. We use a multi-head output layer (one head per disease) rather than three separate models. Same graph, same weights, three output neurons.</p>
         <p><strong>The key innovation:</strong> when Cow A's health signals degrade, <strong>her neighbors' risk scores update through message passing</strong> — even if they look fine right now. A threshold alert or LSTM watching each cow in isolation structurally cannot do this.</p>
         <div class="code-block">
@@ -1216,7 +1216,7 @@ footer {
     <div class="tech-card">
       <div class="tl">ML</div>
       <h4>PyTorch Geometric</h4>
-      <p>GraphSAGE + GRU, three-head output. Trained on Wageningen dataset with synthetic disease injection. Production inference via <strong>AWS SageMaker</strong> with <strong>AWS Neuron</strong> for cost-efficient acceleration on Inferentia chips.</p>
+      <p>GraphSAGE + GRU, three-head output. Trained on MmCows dataset (Purdue/NEIS Lab) with synthetic disease injection. Production inference via <strong>AWS SageMaker</strong> with <strong>AWS Neuron</strong> for cost-efficient acceleration on Inferentia chips.</p>
     </div>
     <div class="tech-card">
       <div class="tl">XAI / LLM</div>
@@ -1250,7 +1250,7 @@ footer {
         <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--sage); margin-top:6px;">Hours 1–6</div>
       </div>
       <div style="padding:18px; border-right:1px solid var(--line); font-size:13.5px; color:#444; line-height:1.7;">
-        Download the <strong>Wageningen dairy sensor dataset</strong>. Write a Python script to simulate a 60-cow barn: assign cows to pens and feeding stations, define a stall adjacency matrix. Write the <strong>disease injection function</strong> — picks a random cow at T=0, marks her sick, propagates to pen-mates at documented transmission probability over 7-day windows. Run it 500+ times to generate a labeled dataset of (graph snapshot → sick/not at T+48h).
+        Download the <strong>MmCows dataset</strong> (Purdue / NEIS Lab, public on GitHub). Write a Python script to simulate a 60-cow barn: assign cows to pens and feeding stations, define a stall adjacency matrix. Write the <strong>disease injection function</strong> — picks a random cow at T=0, marks her sick, propagates to pen-mates at documented transmission probability over 7-day windows. Run it 500+ times to generate a labeled dataset of (graph snapshot → sick/not at T+48h).
       </div>
       <div style="padding:18px; font-size:13.5px; color:#444; line-height:1.7;">
         <strong>Hands off:</strong> <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">dataset.pt</code> — PyG-formatted graph snapshots with labels. ML team can start training immediately.
@@ -1535,7 +1535,7 @@ footer {
       <tr>
         <td><div class="tn">2</div></td>
         <td><span class="trole">ML Engineers</span>Data pipeline + model</td>
-        <td>Tier-aware data ingestion (CSV/API/manual), dynamic graph construction from pen + feeding records, GraphSAGE/TGN training on Wageningen dataset with synthetic disease injection, evaluation + risk score calibration across data tiers</td>
+        <td>Tier-aware data ingestion (CSV/API/manual), dynamic graph construction from pen + feeding records, GraphSAGE/TGN training on MmCows dataset (Purdue/NEIS Lab) with synthetic disease injection, evaluation + risk score calibration across data tiers</td>
         <td><div class="tstack">PyTorch Geometric · NumPy · scikit-learn · pandas</div></td>
       </tr>
       <tr>
