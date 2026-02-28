@@ -401,7 +401,7 @@ const Homepage = ({ onNavigate }) => {
                         <div className="kicker" style={{ marginBottom: '10px', color: 'var(--sage)' }}>Why It Works at Tier 1</div>
                         <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '16px', color: 'rgba(242,237,228,0.75)', lineHeight: 1.65, margin: 0 }}>
                             The <strong style={{ color: 'var(--sage-lt)' }}>graph structure</strong> — the insight that pen assignments alone define a contact network — is why Tauron works at Tier 1 when every competitor requires hardware.{' '}
-                            <strong style={{ color: 'var(--sage-lt)' }}>Two cows in the same pen = an edge. Same feeding station = a weighted edge.</strong>{' '}
+                            <strong style={{ color: 'var(--sage-lt)' }}>Two cows in the same pen = an edge.</strong>{' '}
                             Tauron doesn't need GPS to know who was near whom. It just needs to know where they sleep and eat.
                         </p>
                     </div>
