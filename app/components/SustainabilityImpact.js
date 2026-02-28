@@ -10,12 +10,20 @@ const SustainabilityImpact = () => {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [tierInfo, setTierInfo] = useState(null);
     const [metrics, setMetrics] = useState([
         { title: 'Antibiotics Avoided', value: '—', icon: 'shield-plus', color: 'var(--sage)' },
         { title: 'Milk Yield Saved', value: '—', icon: 'trending-up', color: 'var(--straw)' },
         { title: 'Avg Lead Time', value: '—', icon: 'clock', color: 'var(--ink)' },
         { title: 'Cows Monitored', value: '—', icon: 'check-circle-2', color: 'var(--sage)' },
     ]);
+
+    useEffect(() => {
+        fetch(`${API}/api/tier`)
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(setTierInfo)
+            .catch(() => {}); // non-critical — banner stays hidden on failure
+    }, []);
 
     useEffect(() => {
         fetch(`${API}/herd`)
@@ -87,63 +95,65 @@ const SustainabilityImpact = () => {
                 </div>
             )}
 
-            <div style={{
-                background: 'var(--green)',
-                borderRadius: '12px',
-                padding: '24px',
-                color: 'var(--bg)',
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: '0 10px 30px rgba(46, 94, 30, 0.2)'
-            }}>
-                {/* Decorative background circle */}
+            {tierInfo && (
                 <div style={{
-                    position: 'absolute',
-                    top: '-40px',
-                    right: '-40px',
-                    width: '150px',
-                    height: '150px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.1)',
-                    pointerEvents: 'none'
-                }}></div>
+                    background: 'var(--green)',
+                    borderRadius: '12px',
+                    padding: '24px',
+                    color: 'var(--bg)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    boxShadow: '0 10px 30px rgba(46, 94, 30, 0.2)'
+                }}>
+                    {/* Decorative background circle */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '-40px',
+                        right: '-40px',
+                        width: '150px',
+                        height: '150px',
+                        borderRadius: '50%',
+                        background: 'rgba(255,255,255,0.1)',
+                        pointerEvents: 'none'
+                    }}></div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                    <div style={{ background: 'rgba(255,255,255,0.2)', padding: '4px 8px', borderRadius: '4px', fontFamily: 'Cormorant Garamond, serif', fontSize: '14px', fontWeight: 'bold', letterSpacing: '0.1em' }}>
-                        DATA TIER 1
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                        <div style={{ background: 'rgba(255,255,255,0.2)', padding: '4px 8px', borderRadius: '4px', fontFamily: 'Cormorant Garamond, serif', fontSize: '14px', fontWeight: 'bold', letterSpacing: '0.1em' }}>
+                            DATA TIER {tierInfo.tier}
+                        </div>
+                        <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.9)' }}>{tierInfo.label}</div>
                     </div>
-                    <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.9)' }}>Manual Records Only</div>
+
+                    <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 'bold', marginBottom: '12px', lineHeight: '1.2' }}>
+                        Unlock {tierInfo.next_tier_accuracy}% Model Accuracy
+                    </h3>
+
+                    <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', lineHeight: '1.5', marginBottom: '20px' }}>
+                        {tierInfo.next_tier_description}
+                    </p>
+
+                    <button style={{
+                        background: 'var(--bg)',
+                        color: 'var(--green)',
+                        border: 'none',
+                        padding: '12px 20px',
+                        borderRadius: '6px',
+                        fontFamily: 'Cormorant Garamond, serif',
+                        fontSize: '15px',
+                        fontWeight: 'bold',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        transition: 'transform 0.2s'
+                    }} className="hover-lift">
+                        <i data-lucide="plug-zap" style={{ width: '14px', height: '14px' }}></i>
+                        Integrate {tierInfo.next_tier_label}
+                    </button>
                 </div>
-
-                <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '26px', fontWeight: 'bold', marginBottom: '12px', lineHeight: '1.2' }}>
-                    Unlock 74% Model Accuracy
-                </h3>
-
-                <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', lineHeight: '1.5', marginBottom: '20px' }}>
-                    You are relying exclusively on daily manual logs. Connect your parlor's automated milking system to upgrade to Tier 2 and vastly improve predictions.
-                </p>
-
-                <button style={{
-                    background: 'var(--bg)',
-                    color: 'var(--green)',
-                    border: 'none',
-                    padding: '12px 20px',
-                    borderRadius: '6px',
-                    fontFamily: 'Cormorant Garamond, serif',
-                    fontSize: '15px',
-                    fontWeight: 'bold',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    transition: 'transform 0.2s'
-                }} className="hover-lift">
-                    <i data-lucide="plug-zap" style={{ width: '14px', height: '14px' }}></i>
-                    Integrate Milking Data
-                </button>
-            </div>
+            )}
         </div>
     );
 };
