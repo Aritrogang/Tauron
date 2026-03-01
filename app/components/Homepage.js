@@ -144,7 +144,7 @@ const Homepage = ({ onNavigate }) => {
                         marginBottom: '32px',
                     }}>
                         Tauron watches your herd so you don't have to guess.
-                        GNN-powered disease prediction — 48 hours before symptoms appear.
+                        GNN-powered disease prediction 48 hours before symptoms appear.
                     </p>
 
                     {/* Quick herd status strip */}

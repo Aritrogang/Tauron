@@ -78,7 +78,7 @@ const App = () => {
                     lineHeight: 1.5,
                     opacity: 0.8
                 }}>
-                    GNN-powered disease prediction — <br />
+                    GNN-powered disease prediction <br />
                     48 hours before symptoms appear.
                 </p>
             </div>
