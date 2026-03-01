@@ -945,7 +945,7 @@
             <!-- ══════════════════════════════════════════════════════════════════
                  SLIDE 4 — Live Product Demo
             ══════════════════════════════════════════════════════════════════ -->
-            <section class="center-slide" data-transition="zoom" style="text-align: center;">
+            <section id="videoSlide" class="center-slide" data-transition="zoom" style="text-align: center;">
                 <span class="eyebrow" style="justify-content: center;">Live Demo</span>
                 <h2 class="slide-h2" style="text-align: center; margin-bottom: 8px;">Tauron in Action</h2>
                 <p style="font-size: 0.52em; color: rgba(242,237,228,0.45); text-align: center; margin-bottom: 16px;">
@@ -953,7 +953,7 @@
                 </p>
 
                 <div style="display: flex; justify-content: center; align-items: center; flex: 1;">
-                    <video controls playsinline
+                    <video id="demoVideo" controls playsinline
                         style="width: 88%; max-height: 68vh; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.6);"
                         src="TauronDemo.mp4">
                         Your browser does not support video playback.
@@ -1285,6 +1285,65 @@
         document.addEventListener('fullscreenchange', () => {
             document.body.classList.toggle('is-fullscreen', !!document.fullscreenElement);
         });
+
+        // Video slide: auto-fullscreen on enter, space/arrow exits fullscreen + advances
+        const demoVideo = document.getElementById('demoVideo');
+        let videoAdvanceOnExit = false;
+
+        // Find video slide index
+        const allSlides = deck.getSlides();
+        const videoSlideIndex = allSlides.findIndex(s => s.id === 'videoSlide');
+
+        deck.on('slidechanged', (event) => {
+            if (event.indexh === videoSlideIndex) {
+                setTimeout(() => {
+                    demoVideo.currentTime = 0;
+                    demoVideo.requestFullscreen().then(() => {
+                        demoVideo.play().catch(() => {});
+                    }).catch(() => {});
+                }, 400);
+            } else {
+                // Leaving video slide — pause and reset
+                demoVideo.pause();
+            }
+        });
+
+        // Intercept space/arrow while video is fullscreen → exit + advance
+        document.addEventListener('keydown', (e) => {
+            if (document.fullscreenElement !== demoVideo) return;
+            if (e.key === ' ' || e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                videoAdvanceOnExit = true;
+                document.exitFullscreen();
+            }
+        }, true);
+
+        // After fullscreen exits, advance only if triggered by space/arrow
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && videoAdvanceOnExit) {
+                videoAdvanceOnExit = false;
+                demoVideo.pause();
+                setTimeout(() => deck.next(), 50);
+            }
+        });
+
+        // Keep tab active and screen awake during presentation
+        let wakeLock = null;
+        async function requestWakeLock() {
+            if ('wakeLock' in navigator) {
+                try {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                } catch (e) {}
+            }
+        }
+        // Re-acquire on visibility change (browser releases it when tab is hidden)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') requestWakeLock();
+        });
+        // Fallback: no-op interval to prevent tab throttling
+        setInterval(() => {}, 10000);
+        requestWakeLock();
     </script>
 </body>
 
