@@ -217,12 +217,11 @@ body {
 }
 
 .xai-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
     color: var(--mist);
     white-space: nowrap;
+    font-weight: 600;
 }
 
 .xai-value {

@@ -156,9 +156,9 @@ const Layout = ({ currentTab, onTabChange, children }) => {
                                 onClick={() => setIsEditingFarm(true)}
                                 title="Click to edit farm details"
                                 style={{
-                                    fontSize: '11px',
-                                    color: 'rgba(242,237,228,0.35)',
-                                    fontFamily: 'JetBrains Mono, monospace',
+                                    fontSize: '16px',
+                                    color: 'var(--mist)',
+                                    fontFamily: 'Cormorant Garamond, serif',
                                     marginTop: '8px',
                                     cursor: 'pointer',
                                     borderBottom: '1px dotted rgba(255,255,255,0.2)',

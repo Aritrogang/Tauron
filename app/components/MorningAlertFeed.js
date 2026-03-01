@@ -3,7 +3,7 @@ const { useState, useEffect } = React;
 const API = 'http://localhost:8000';
 const PEN_LABELS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-const derivePen = (id) => PEN_LABELS[Math.min(Math.floor(id / 10), PEN_LABELS.length - 1)] || 'X';
+const derivePen = (id) => 'Pen ' + (PEN_LABELS[Math.min(Math.floor(id / 10), PEN_LABELS.length - 1)] || 'X');
 const statusToLevel = (s) => s === 'alert' ? 'high' : (s === 'watch' ? 'warn' : 'ok');
 const fmtTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 const fmtFeature = (f) => f ? f.replace(/_/g, ' ') : '—';
@@ -59,20 +59,17 @@ const AlertCard = ({ alert }) => {
                     <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '15px', fontWeight: '700', color: 'rgba(24, 20, 16, 0.9)' }}>
                         COW {alert.cowId}
                     </span>
-                    <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '14px', color: 'var(--mist)', marginLeft: '4px' }}>
-                        Pen {alert.pen}
-                    </span>
                 </div>
-                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '12px', fontWeight: '600', color: colors.dot }}>
-                    {alert.time}
-                </div>
+                <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '15px', fontWeight: '700', color: 'var(--mist)' }}>
+                    {alert.pen}
+                </span>
             </div>
 
-            <div style={{ marginTop: '8px', fontSize: '18px', fontWeight: '600', color: 'var(--barn)', lineHeight: '1.2' }}>
+            <div style={{ marginTop: '8px', fontFamily: 'Cormorant Garamond, serif', fontSize: '18px', fontWeight: '600', color: 'var(--barn)', lineHeight: '1.2' }}>
                 {alert.message}
             </div>
 
-            <div style={{ marginTop: '8px', fontSize: '16px', color: '#444' }}>
+            <div style={{ marginTop: '8px', fontFamily: 'Cormorant Garamond, serif', fontSize: '16px', color: '#444' }}>
                 <strong style={{ color: 'var(--ink)' }}>Signal:</strong> {fmtFeature(alert.top_feature)}
             </div>
 
@@ -83,12 +80,12 @@ const AlertCard = ({ alert }) => {
                 display: expanded ? 'block' : 'none',
                 animation: expanded ? 'fadeIn 0.3s ease' : 'none'
             }}>
-                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', color: 'var(--mist)', letterSpacing: '0.1em', marginBottom: '10px' }}>
+                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '15px', fontWeight: '700', color: 'var(--mist)', marginBottom: '10px' }}>
                     XAI Trace
                 </div>
 
                 {loadingExplain ? (
-                    <div style={{ fontSize: '14px', color: 'var(--mist)' }}>Loading explanation…</div>
+                    <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '14px', color: 'var(--mist)' }}>Loading explanation…</div>
                 ) : explain ? (
                     <>
                         {/* ── Label / Value grid ── */}
@@ -110,7 +107,7 @@ const AlertCard = ({ alert }) => {
                                         {explain.top_edge.from != null ? `#${explain.top_edge.from}` : `#${alert.cowId}`}
                                         {' → '}
                                         #{explain.top_edge.to ?? explain.top_edge.neighbour_cow}
-                                        <span style={{ color: 'var(--mist)', marginLeft: '6px', fontSize: '13px' }}>
+                                        <span style={{ color: 'var(--mist)', marginLeft: '6px', fontSize: '14px' }}>
                                             wt {(explain.top_edge.weight ?? explain.top_edge.edge_weight ?? 0).toFixed(2)}
                                         </span>
                                     </span>
@@ -121,13 +118,13 @@ const AlertCard = ({ alert }) => {
                         {/* ── Disease Breakdown ── */}
                         {(explain.all_risks || explain.xai?.all_risks) && (
                             <div style={{ marginTop: '12px' }}>
-                                <div className="xai-label" style={{ marginBottom: '6px' }}>Disease Breakdown</div>
+                                <div className="xai-label" style={{ marginBottom: '6px', fontWeight: '700' }}>Disease Breakdown</div>
                                 {Object.entries(explain.all_risks || explain.xai?.all_risks).map(([disease, score]) => {
                                     const pct = Math.round(score * 100);
                                     const dominant = disease === (explain.dominant_disease || explain.xai?.dominant_disease);
                                     return (
                                         <div key={disease} style={{ marginBottom: '5px' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '2px' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'Cormorant Garamond, serif', fontSize: '14px', marginBottom: '2px' }}>
                                                 <span style={{ color: dominant ? 'var(--ink)' : 'var(--mist)', fontWeight: dominant ? '700' : '400', textTransform: 'capitalize' }}>
                                                     {disease === 'brd' ? 'BRD' : disease}
                                                 </span>
@@ -149,13 +146,13 @@ const AlertCard = ({ alert }) => {
                         )}
 
                         {/* ── Alert Text ── */}
-                        <div style={{ fontSize: '15px', color: '#444', lineHeight: '1.5', marginTop: '12px', borderTop: `1px dashed ${colors.border}`, paddingTop: '10px' }}>
+                        <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '15px', color: '#444', lineHeight: '1.5', marginTop: '12px', borderTop: `1px dashed ${colors.border}`, paddingTop: '10px' }}>
                             <i data-lucide="message-circle" style={{ width: '13px', height: '13px', verticalAlign: '-2px', marginRight: '4px' }}></i>
                             {explain.alert_text || explain.alert || explain.xai?.alert_text || 'No alert text available.'}
                         </div>
 
                         {/* ── Confidence ── */}
-                        <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: 'var(--sage)', fontWeight: '600' }}>
+                        <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'Cormorant Garamond, serif', fontSize: '14px', color: 'var(--sage)', fontWeight: '600' }}>
                             <i data-lucide="check-circle" style={{ width: '12px', height: '12px' }}></i>
                             Model Confidence: {alert.confidence}%
                         </div>
@@ -165,6 +162,7 @@ const AlertCard = ({ alert }) => {
 
             <div style={{
                 marginTop: '12px',
+                fontFamily: 'Cormorant Garamond, serif',
                 fontSize: '13px',
                 color: 'var(--mist)',
                 display: expanded ? 'none' : 'flex',
@@ -230,7 +228,7 @@ const MorningAlertFeed = () => {
         pen: derivePen(c.id),
         level: statusToLevel(c.status),
         time: now,
-        message: `${c.dominant_disease ? c.dominant_disease.charAt(0).toUpperCase() + c.dominant_disease.slice(1) : 'Risk'} — ${Math.round(c.risk_score * 100)}% within 48h`,
+        message: `${c.dominant_disease ? c.dominant_disease.charAt(0).toUpperCase() + c.dominant_disease.slice(1) : 'Risk'} — ${Math.round(c.risk_score * 100)}%`,
         top_feature: c.top_feature,
         confidence: c.all_risks && c.dominant_disease
             ? Math.round(c.all_risks[c.dominant_disease] * 100)
@@ -274,7 +272,7 @@ const MorningAlertFeed = () => {
                 alignItems: 'center',
                 gap: '8px'
             }}>
-                <i data-lucide="list-filter" style={{ width: '12px', height: '12px' }}></i> Action Items
+                <i data-lucide="list-filter" style={{ width: '12px', height: '12px' }}></i> Action Items — 48h Risk Window
             </div>
 
             {alerts.length === 0 ? (
