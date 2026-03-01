@@ -15,7 +15,7 @@ import random as _random
 # Emergency rollback: flip back to True — demo reverts in 30 seconds.
 # Also respects USE_MOCK env var (e.g. USE_MOCK=1 uvicorn backend.main:app)
 
-USE_MOCK = os.environ.get("USE_MOCK", "").strip().lower() in ("1", "true", "yes") or True
+USE_MOCK = os.environ.get("USE_MOCK", "").strip().lower() in ("1", "true", "yes")
 
 
 # ── Generate 60-cow mock herd ──────────────────────────────────────────────
