@@ -545,16 +545,6 @@
         }
 
         /* ── Slide number (top-right) ────────────────────────────────────────── */
-        .slide-num {
-            position: fixed;
-            top: 28px; right: 36px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 9px;
-            letter-spacing: 0.16em;
-            color: rgba(242, 237, 228, 0.18);
-            z-index: 500;
-        }
-
         /* ── Fullscreen hint (top-left) ──────────────────────────────────────── */
         .hint {
             position: fixed;
@@ -612,8 +602,7 @@
 
         /* ── Hide everything in fullscreen ───────────────────────────────────── */
         body.is-fullscreen .nav,
-        body.is-fullscreen .hint,
-        body.is-fullscreen .slide-num { display: none; }
+        body.is-fullscreen .hint { display: none; }
     </style>
 </head>
 
@@ -621,8 +610,7 @@
     <div class="noise-overlay"></div>
 
     <div class="progress-bar" id="progress"></div>
-    <div class="slide-num" id="slideNum">01 / 09</div>
-    <div class="hint" id="hint" onclick="toggleFullscreen()">⤢ fullscreen</div>
+    <div class="hint" id="hint">↗ fullscreen</div>
 
     <nav class="nav">
         <button class="nav-btn" id="prevBtn">←</button>
@@ -836,8 +824,8 @@
                 <div style="display: flex; gap: 24px; margin-top: 18px; align-items: flex-start;">
 
                     <!-- Left: Architecture text diagram -->
-                    <div style="flex: 1.1;" class="fragment fade-right">
-                        <div class="dark-card" style="font-family: 'Cormorant Garamond', serif; font-size: 0.48em; line-height: 2; color: rgba(242,237,228,0.65); border-left: 3px solid var(--sage);">
+                    <div style="flex: 1.1;">
+                        <div class="dark-card fragment fade-right" data-fragment-index="1" style="font-family: 'Cormorant Garamond', serif; font-size: 0.48em; line-height: 2; color: rgba(242,237,228,0.65); border-left: 3px solid var(--sage);">
                             <span style="color: var(--mist);">// TauronGNN · 120K params · 50 epochs</span><br>
                             <span style="color: var(--sage-lt);">Input</span>
                             <span style="color: var(--mist);">     7 features × 9 timesteps / node</span><br>
@@ -855,7 +843,7 @@
                             <span style="color: var(--mist);">   mastitis · BRD · lameness</span>
                         </div>
 
-                        <div class="xai-chain fragment fade-up" data-fragment-index="2">
+                        <div class="xai-chain fragment fade-up" data-fragment-index="3">
                             <div class="xai-node active">Gradient XAI</div>
                             <span class="xai-arrow">→</span>
                             <div class="xai-node active">feature_mask</div>
@@ -869,8 +857,8 @@
                     </div>
 
                     <!-- Right: stat cards -->
-                    <div style="flex: 0.9; display: flex; flex-direction: column; gap: 12px;" class="fragment fade-left">
-                        <div class="grid-2" style="gap: 12px;">
+                    <div style="flex: 0.9; display: flex; flex-direction: column; gap: 12px;">
+                        <div class="grid-2 fragment fade-left" data-fragment-index="2" style="gap: 12px;">
                             <div class="stat-card">
                                 <span class="stat-number">120K</span>
                                 <span class="stat-label">Parameters</span>
@@ -889,7 +877,7 @@
                             </div>
                         </div>
 
-                        <div class="dark-card dark-card-highlight fragment fade-up" data-fragment-index="3" style="margin-top: 4px;">
+                        <div class="dark-card dark-card-highlight fragment fade-up" data-fragment-index="4" style="margin-top: 4px;">
                             <p style="font-size: 0.52em; color: rgba(242,237,228,0.8); line-height: 1.5; margin: 0;">
                                 <strong style="color: var(--sage-lt);">Data sovereign by design.</strong><br>
                                 Ollama Mistral-7B runs locally on the farm server. No cow health data leaves the barn.
@@ -901,11 +889,11 @@
             </section>
 
             <!-- ══════════════════════════════════════════════════════════════════
-                 SLIDE 6 — XAI & UX: 6am in a Barn
+                 SLIDE 6 — XAI & UX: 4:30 in a Barn
             ══════════════════════════════════════════════════════════════════ -->
             <section data-transition="slide">
                 <span class="eyebrow">Trust &amp; Action</span>
-                <h2 class="slide-h2">6am in a Barn</h2>
+                <h2 class="slide-h2">4:30am in a Barn</h2>
                 <p class="lede" style="margin-bottom: 16px;">We don't show farmers neural networks. We show them the specific evidence and a clear action.</p>
 
                 <div style="display:flex; gap: 20px; align-items: stretch;">
@@ -980,7 +968,7 @@
                     </div>
 
                     <!-- Arrow -->
-                    <div style="display: flex; align-items: center; color: var(--straw); font-size: 0.7em; flex-shrink: 0;">→</div>
+                    <div class="fragment fade-left" data-fragment-index="2" style="display: flex; align-items: center; color: var(--straw); font-size: 0.7em; flex-shrink: 0;">→</div>
 
                     <!-- Tier 2 -->
                     <div class="tier-col dark-card fragment fade-up" data-fragment-index="2">
@@ -1000,7 +988,7 @@
                     </div>
 
                     <!-- Arrow -->
-                    <div style="display: flex; align-items: center; color: var(--straw); font-size: 0.7em; flex-shrink: 0;">→</div>
+                    <div class="fragment fade-left" data-fragment-index="3" style="display: flex; align-items: center; color: var(--straw); font-size: 0.7em; flex-shrink: 0;">→</div>
 
                     <!-- Tier 3 -->
                     <div class="tier-col dark-card fragment fade-up" data-fragment-index="3">
@@ -1159,16 +1147,14 @@
             for (let i = 0; i < total; i++) {
                 const d = document.createElement('div');
                 d.className = 'nav-dot' + (i === 0 ? ' active' : '');
-                d.onclick = () => deck.slide(i);
+                d.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); deck.slide(i, 0, -1); });
                 dots.appendChild(d);
             }
 
             function updateNav() {
                 const idx = deck.getIndices().h;
                 document.getElementById('progress').style.width = `${((idx + 1) / total) * 100}%`;
-                const label = `${pad(idx + 1)} / ${pad(total)}`;
-                document.getElementById('slideNum').textContent = label;
-                document.getElementById('navCounter').textContent = label;
+                document.getElementById('navCounter').textContent = `${pad(idx + 1)} / ${pad(total)}`;
                 document.querySelectorAll('.nav-dot').forEach((d, i) =>
                     d.classList.toggle('active', i === idx));
             }
@@ -1176,17 +1162,24 @@
             deck.on('slidechanged', updateNav);
             updateNav();
 
-            document.getElementById('prevBtn').onclick = () => deck.prev();
-            document.getElementById('nextBtn').onclick = () => deck.next();
+            document.getElementById('prevBtn').addEventListener('click', e => {
+                e.stopPropagation(); e.preventDefault();
+                const h = deck.getIndices().h;
+                if (h > 0) deck.slide(h - 1, 0, -1);
+            });
+            document.getElementById('nextBtn').addEventListener('click', e => {
+                e.stopPropagation(); e.preventDefault();
+                const h = deck.getIndices().h;
+                if (h < total - 1) deck.slide(h + 1, 0, -1);
+            });
+            document.getElementById('hint').addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                } else {
+                    document.exitFullscreen();
+                }
+            });
         });
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else {
-                document.exitFullscreen();
-            }
-        }
 
         document.addEventListener('fullscreenchange', () => {
             document.body.classList.toggle('is-fullscreen', !!document.fullscreenElement);
