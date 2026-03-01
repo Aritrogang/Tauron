@@ -517,15 +517,12 @@
             color: rgba(242, 237, 228, 0.75);
             line-height: 1.35;
             margin-bottom: 5px;
-            padding-left: 16px;
+            padding-left: 0;
             position: relative;
         }
 
         .ask-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--sage-lt);
+            content: none;
         }
 
         .price-badge {
@@ -1166,17 +1163,17 @@
                     <!-- What We Built -->
                     <div class="ask-card dark-card fragment fade-up" data-fragment-index="1">
                         <span class="ask-icon" style="color: var(--sage);">What We Built</span>
-                        <div class="ask-title">Working System</div>
+                        <div class="ask-title">End-to-End System</div>
                         <ul class="ask-list">
-                            <li>GraphSAGE + GRU, 120K params</li>
-                            <li>60-cow live inference demo</li>
-                            <li>47/47 backend tests passing</li>
-                            <li>4-screen React + D3 PWA</li>
-                            <li>Gradient XAI + Ollama LLM chain</li>
-                            <li>CSV upload + voice entry</li>
+                            <li>48-hour disease warning from records you already keep</li>
+                            <li>GNN flags transmission paths — not just sick cows</li>
+                            <li>Explainable alerts: cow, feature, pen-mate chain</li>
+                            <li>Plain-English farmer text via on-device LLM</li>
+                            <li>Live 60-cow herd demo, React + D3 map</li>
+                            <li>Tier 1 AUROC 75% — no sensors required</li>
                         </ul>
                         <div class="price-badge" style="color: var(--sage-lt);">
-                            5,400 rows · 581 graph snapshots<br>Wageningen sensor profiles
+                            Built in 36 hours · 47/47 tests passing
                         </div>
                     </div>
 
