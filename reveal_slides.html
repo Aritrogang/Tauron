@@ -391,18 +391,18 @@
         }
 
         .tier-header {
-            padding: 0.4em 0.65em 0.3em;
+            padding: 0.55em 0.75em 0.45em;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .tier-body {
-            padding: 0.35em 0.65em;
+            padding: 0.5em 0.75em;
             flex-grow: 1;
         }
 
         .tier-num {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.15em;
+            font-size: 1.4em;
             font-weight: 700;
             line-height: 1;
             display: block;
@@ -438,11 +438,13 @@
             font-size: 0.5em;
             color: rgba(242, 237, 228, 0.65);
             margin-bottom: 4px;
+            padding-left: 18px;
+            position: relative;
             line-height: 1.25;
         }
 
         ul.tier-list li::before {
-            content: '—';
+            content: '•';
             position: absolute;
             left: 0;
             color: var(--sage);
@@ -992,7 +994,7 @@
                             <span style="color: var(--mist);"> mastitis · BRD · lameness</span>
                         </div>
 
-                        <div class="xai-chain fragment fade-up" data-fragment-index="3" style="margin-top: 0;">
+                        <div class="xai-chain fragment fade-up" data-fragment-index="3" style="margin-top: 16px;">
                             <div class="xai-node active">Gradient XAI</div>
                             <span class="xai-arrow">→</span>
                             <div class="xai-node active">feature_mask</div>
@@ -1055,11 +1057,9 @@
                     <div class="tier-col dark-card dark-card-highlight fragment fade-up" data-fragment-index="1">
                         <div class="tier-header">
                             <span class="tier-num" style="color: var(--sage-lt);">Tier 1</span>
-                            <span class="tier-accuracy" style="color: var(--sage-lt);">~51% AUROC</span>
+                            <span class="tier-accuracy" style="color: var(--sage-lt);">~75% AUROC</span>
+                            <div style="margin-top: 10px; font-size: 0.5em; color: rgba(242,237,228,0.5); font-weight: 400;">Manual Records</div>
                             <span class="you-are-here">You are here</span>
-                            <div
-                                style="margin-top: 10px; font-size: 0.5em; color: rgba(242,237,228,0.5); font-weight: 400;">
-                                Manual Records</div>
                         </div>
                         <div class="tier-body">
                             <ul class="tier-list">
@@ -1080,7 +1080,7 @@
                     <div class="tier-col dark-card fragment fade-up" data-fragment-index="2">
                         <div class="tier-header">
                             <span class="tier-num" style="color: var(--straw-lt);">Tier 2</span>
-                            <span class="tier-accuracy" style="color: var(--straw-lt);">~74% AUROC</span>
+                            <span class="tier-accuracy" style="color: var(--straw-lt);">~76% AUROC</span>
                             <div
                                 style="margin-top: 10px; font-size: 0.5em; color: rgba(242,237,228,0.5); font-weight: 400;">
                                 Automated Milking</div>
@@ -1104,7 +1104,7 @@
                     <div class="tier-col dark-card fragment fade-up" data-fragment-index="3">
                         <div class="tier-header">
                             <span class="tier-num" style="color: var(--bg);">Tier 3</span>
-                            <span class="tier-accuracy" style="color: var(--bg);">~89% AUROC</span>
+                            <span class="tier-accuracy" style="color: var(--bg);">~98% AUROC</span>
                             <div
                                 style="margin-top: 10px; font-size: 0.5em; color: rgba(242,237,228,0.45); font-weight: 400;">
                                 Full Sensor Suite</div>
